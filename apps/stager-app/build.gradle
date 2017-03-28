@@ -63,9 +63,6 @@ dependencyManagement {
 
 dependencies {
   compile(group: "io.ossim.omar.plugins", name: "omar-stager", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-  compile(group: "io.ossim.omar.plugins", name: "omar-raster", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-  compile(group: "io.ossim.omar.plugins", name: "omar-video", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-  compile(group: "io.ossim.omar.plugins", name: "omar-opir", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   compile "org.grails.plugins:hibernate5"
   compile "org.hibernate:hibernate-core:5.0.10.Final"
   compile "org.hibernate:hibernate-ehcache:5.0.10.Final"

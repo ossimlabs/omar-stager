@@ -1,6 +1,7 @@
 spring:
   application:
-    name: o2-stager
+#    name: o2-stager
+    name: stager-app
   cloud:
     config:
       enabled: false

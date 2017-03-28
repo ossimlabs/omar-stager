@@ -53,6 +53,7 @@ dependencyManagement {
 }
 
 dependencies {
+  compile(group: "io.ossim.omar.plugins", name: "omar-oms", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   compile(group: "io.ossim.omar.plugins", name: "omar-ingest-metrics", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   compile(group: "io.ossim.omar.plugins", name: "omar-raster", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   compile(group: "io.ossim.omar.plugins", name: "omar-video", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)

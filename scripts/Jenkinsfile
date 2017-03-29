@@ -10,8 +10,7 @@
 //    OPENSHIFT_PASSWORD: The password to use logging into the docker registry
 //==================================================================================================
 
-// TODO: get to run on any node
-node("master"){
+node(""){
     def workspaceDir = pwd()
     def appName = "omar-stager"
     def omarCommonProjName = "omar-common"
@@ -38,9 +37,9 @@ node("master"){
     try {
       stage ("Publish Plugin Artifactory")
       {
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', 
+          withCredentials([[$class: 'UsernamePasswordMultiBinding',
                             credentialsId: 'artifactoryCredentials',
-                            usernameVariable: 'ARTIFACTORY_USER', 
+                            usernameVariable: 'ARTIFACTORY_USER',
                             passwordVariable: 'ARTIFACTORY_PASSWORD']])
             {
                     sh """
@@ -52,9 +51,9 @@ node("master"){
       }
       stage ("Publish App Artifactory")
       {
-           withCredentials([[$class: 'UsernamePasswordMultiBinding', 
+           withCredentials([[$class: 'UsernamePasswordMultiBinding',
                             credentialsId: 'artifactoryCredentials',
-                            usernameVariable: 'ARTIFACTORY_USER', 
+                            usernameVariable: 'ARTIFACTORY_USER',
                             passwordVariable: 'ARTIFACTORY_PASSWORD']])
             {
                sh """
@@ -63,13 +62,13 @@ node("master"){
                 popd
                 """
             }
-       } 
+       }
 
-      stage ("Publish Docker App") 
-      {      
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', 
+      stage ("Publish Docker App")
+      {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
                         credentialsId: 'dockerCredentials',
-                        usernameVariable: 'OPENSHIFT_USERNAME', 
+                        usernameVariable: 'OPENSHIFT_USERNAME',
                         passwordVariable: 'OPENSHIFT_PASSWORD']])
         {
             // Run all tasks on the app. This includes pushing to OpenShift and S3.

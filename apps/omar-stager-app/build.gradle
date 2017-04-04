@@ -1,7 +1,7 @@
 buildscript {
   ext {
     grailsVersion = project.grailsVersion
-    baseImage = "o2-ossim"
+    baseImage = "omar-ossim-base"
   }
   if(System.env.OMAR_COMMON_PROPERTIES)
   {

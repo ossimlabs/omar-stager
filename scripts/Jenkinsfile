@@ -10,7 +10,7 @@
 //    OPENSHIFT_PASSWORD: The password to use logging into the docker registry
 //==================================================================================================
 
-node(""){
+node("slave"){
     def workspaceDir = pwd()
     def appName = "omar-stager"
     def omarCommonProjName = "omar-common"

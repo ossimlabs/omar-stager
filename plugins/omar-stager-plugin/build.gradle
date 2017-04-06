@@ -55,6 +55,7 @@ dependencyManagement {
 dependencies {
   compile(group: "io.ossim.omar.plugins", name: "omar-oms-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   compile(group: "io.ossim.omar.plugins", name: "omar-ingest-metrics-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+  compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
   compile "commons-io:commons-io:2.4"
   compile "org.grails.plugins:quartz:2.0.9"
 

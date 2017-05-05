@@ -5,7 +5,7 @@ import grails.util.Environment
 appender('STDOUT', FileAppender) { //ConsoleAppender) {
     file = "stacktrace.log"
     append = true
-    //encoder(PatternLayoutEncoder) {
+    encoder(PatternLayoutEncoder) {
         pattern = "%level %logger - %msg%n"
     }
 }

@@ -174,6 +174,7 @@ class StagerService
 					}
 					catch(e)
 					{
+						log.error e.toString()
 						results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 						results.message = "XML is in incorrect format for file ${params.filename}"
 					}
@@ -200,7 +201,6 @@ class StagerService
 		}
 		catch(e)
 		{
-			println e
 			results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 			results.message = "Unable to process file ${params.filename} with ERROR: ${e}"
 			log.error "${e.toString()}"
@@ -264,6 +264,7 @@ class StagerService
 		}
 		catch ( Exception e )
 		{
+			log.error e.toString()
 			//println "ERROR: ${ filename } ${ e.message }"
 			e.printStackTrace(  )
 		}

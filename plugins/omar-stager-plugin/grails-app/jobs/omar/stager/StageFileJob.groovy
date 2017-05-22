@@ -23,6 +23,7 @@ class StageFileJob {
 //                                                     overviewCompressionType: fileRecord.overviewCompressionType,
 //                                                     overviewType: fileRecord.overviewType
 //            ]
+            log.info "Staging File: ${fileRecord.filename}"
             def result =  stagerService.stageFileJni(fileRecord as HashMap)
             ingestMetricsService.endIngest(fileRecord.filename)
 
@@ -43,6 +44,7 @@ class StageFileJob {
             }
             else
             {
+               log.info "File ${fileRecord.filename} successfully staged"
                stagerService.updateFileStatus(fileRecord.processId, ProcessStatus.FINISHED, "File ${fileRecord.filename} successfully staged")
                ingestMetricsService.setStatus(fileRecord.filename, ProcessStatus.FINISHED.toString(),  result?.message?:"File ${fileRecord.filename} successfully staged")
             }

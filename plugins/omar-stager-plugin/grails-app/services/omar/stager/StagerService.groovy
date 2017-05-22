@@ -100,6 +100,7 @@ class StagerService
 
 	def stageFileJni(HashMap params, String baseDir='/')
 	{
+		log.info "Staging ${params}"
 		def results = [status: HttpStatus.OK, message:""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
@@ -207,7 +208,7 @@ class StagerService
 			ingestMetricsService.setStatus(filename, ProcessStatus.FAILED, "Unable to process file ${params.filename} with ERROR: ${e}")
 		}
 		imageStager?.delete()
-
+		log.info "Finished staging with result: ${results}"
 		results
 	}
 	def stageFile( String filename, String baseDir='/' )

@@ -134,21 +134,3 @@ videoStreaming:
 #  flashDirRoot: /var/www/html/videos
   flashUrlRoot: http://localhost/videos
 
-loggingLevel: DEBUG
-
-logging:
-  level:
-    sqs.app: ${loggingLevel}
-    grails.app.jobs.sqs.app: ${loggingLevel}
-    grails.app.services.omar.sqs: ${loggingLevel}
-    grails.app.services.omar.stager: ${loggingLevel}
-    grails.app.services.omar.raster: ${loggingLevel}
-    grails.app.controllers.omar.raster: ${loggingLevel}
-    grails.app.jobs.omar.raster: ${loggingLevel}
-    grails.app.jobs.omar.stager: ${loggingLevel}
-    stager.app: ${loggingLevel}
-    omar.avro: ${loggingLevel}
-    grails.app.services.omar.avro: ${loggingLevel}
-    grails.app.jobs.omar.avro: ${loggingLevel}
-    avro.app: ${loggingLevel}
-

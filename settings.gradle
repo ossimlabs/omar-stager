@@ -1,0 +1,26 @@
+def final O2_DEV_HOME = System.getenv('O2_DEV_HOME')
+
+if ( O2_DEV_HOME ) {
+
+include 'omar-stager-app',
+        // 'omar-stager-plugin',
+        // 'omar-oms-plugin',
+        // 'omar-core-plugin',
+        // 'omar-hibernate-spatial-plugin',
+        // 'omar-ingest-metrics-plugin',
+        // 'omar-raster-plugin',
+        // 'omar-video-plugin',
+//        'omar-opir-plugin'
+
+
+project(':omar-stager-app').projectDir = "${O2_DEV_HOME}/omar-stager/apps/omar-stager-app" as File
+// project(':omar-stager-plugin').projectDir = "${O2_DEV_HOME}/omar-stager/plugins/omar-stager-plugin" as File
+// project(':omar-core-plugin').projectDir = "${O2_DEV_HOME}/omar-core/apps/omar-core-plugin" as File
+// project(':omar-hibernate-spatial-plugin').projectDir = "${O2_DEV_HOME}/omar-hibernate-spatial/apps/omar-hibernate-spatial-plugin" as File
+// project(':omar-oms-plugin').projectDir = "${O2_DEV_HOME}/omar-oms/apps/omar-oms-plugin" as File
+// project(':omar-ingest-metrics-plugin').projectDir = "${O2_DEV_HOME}/omar-ingest-metrics/plugins/omar-ingest-metrics-plugin" as File
+// project(':omar-raster-plugin').projectDir = "${O2_DEV_HOME}/omar-raster/apps/omar-raster-plugin" as File
+// project(':omar-video-plugin').projectDir = "${O2_DEV_HOME}/omar-video/plugins/omar-video-plugin" as File
+//project(':omar-opir-plugin').projectDir = "${O2_DEV_HOME}/omar-opir/plugins/omar-opir-plugin" as File
+
+}

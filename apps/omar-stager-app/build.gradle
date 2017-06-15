@@ -68,14 +68,14 @@ dependencyManagement {
 dependencies {
   if ( System.getenv('O2_DEV_HOME') ) {
     compile project(':omar-stager-plugin')
-//    runtime project(':omar-raster-plugin')
-//    compile project(':omar-video-plugin')
-//    compile project(':omar-opir-plugin')
+    runtime project(':omar-raster-plugin')
+    compile project(':omar-video-plugin')
+    compile project(':omar-opir-plugin')
   } else {
     compile (group: "io.ossim.omar.plugins", name: "omar-stager-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-//    runtime (group: "io.ossim.omar.plugins", name: "omar-raster-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-//    compile(group: "io.ossim.omar.plugins", name: "omar-video-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
-//    compile(group: "io.ossim.omar.plugins", name: "omar-opir-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+    runtime (group: "io.ossim.omar.plugins", name: "omar-raster-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+    compile(group: "io.ossim.omar.plugins", name: "omar-video-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
+    compile(group: "io.ossim.omar.plugins", name: "omar-opir-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   }
 
 

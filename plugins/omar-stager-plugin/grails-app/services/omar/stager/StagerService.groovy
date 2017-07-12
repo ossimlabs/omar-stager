@@ -1,12 +1,13 @@
 package omar.stager
 
-
+import groovy.util.logging.Slf4j
 import omar.core.Repository
 import omar.core.ProcessStatus
 import omar.core.HttpStatus
 import joms.oms.ImageStager
 import grails.transaction.Transactional
 
+@Slf4j
 @Transactional
 class StagerService
 {
@@ -19,7 +20,7 @@ class StagerService
 	def parserPool
 	def ingestService
 	def ingestMetricsService
-   def dataInfoService
+	def dataInfoService
 
 	enum Action {
 		BUILD_OVRS,
@@ -33,7 +34,7 @@ class StagerService
 		repository.scanEndDate = null
 		repository.save()
 
-		StagerJob.triggerNow( [ baseDir: repository.baseDir ] )
+		StagerJob.triggerNow( [baseDir: repository.baseDir] )
 	}
 
 	def cleanUpGorm()
@@ -98,21 +99,23 @@ class StagerService
   }
 */
 
-	def stageFileJni(HashMap params, String baseDir='/')
+	def stageFileJni( HashMap params, String baseDir = '/' )
 	{
 		log.info "Staging ${params}"
-		def results = [status: HttpStatus.OK, message:""]
+		def results = [status: HttpStatus.OK, message: ""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
-		try{
-			ingestMetricsService.startStaging(filename)
-			if(imageStager.open(params.filename))
+
+		try
+		{
+			ingestMetricsService.startStaging( filename )
+			if ( imageStager.open( params.filename ) )
 			{
-				URI uri = new URI(params.filename)
+				URI uri = new URI( params.filename )
 
 				String scheme = uri.scheme
-				if(!scheme) scheme = "file"
-				if(scheme != "file")
+				if ( ! scheme ) scheme = "file"
+				if ( scheme != "file" )
 				{
 					params.buildHistograms = false
 					params.buildOverviews = false
@@ -121,49 +124,33 @@ class StagerService
 				//imageStager.stageAll()
 
 				Integer nEntries = imageStager.getNumberOfEntries()
-				(0..<nEntries).each{
-					imageStager.setEntry(it)
-
-					imageStager.setDefaults()
-
-					imageStager.setHistogramStagingFlag(params.buildHistograms);
-					imageStager.setOverviewStagingFlag(params.buildOverviews);
-					imageStager.setCompressionType(params.overviewCompressionType)
-					imageStager.setOverviewType(params.overviewType)
-					imageStager.setUseFastHistogramStagingFlag(params.useFastHistogramStaging)
-					imageStager.setQuietFlag(true);
-					if(params.buildHistograms&& params.buildOverviews)
-					{
-						Boolean  hasOverviews  = imageStager.hasOverviews();
-						if(hasOverviews)
+				( 0..<nEntries ).each
 						{
-							if(params.buildHistogramsWithR0)
+							imageStager.setEntry( it )
+							imageStager.setDefaults()
+							imageStager.setHistogramStagingFlag( params.buildHistograms )
+							imageStager.setOverviewStagingFlag( params.buildOverviews )
+							imageStager.setCompressionType( params.overviewCompressionType )
+							imageStager.setOverviewType( params.overviewType )
+							imageStager.setUseFastHistogramStagingFlag( params.useFastHistogramStaging )
+							imageStager.setQuietFlag( true )
+
+							if ( params.buildHistograms && params.buildOverviews
+									&& imageStager.hasOverviews() && params.buildHistogramsWithR0 )
 							{
-								imageStager.setHistogramStagingFlag(false);
+
+								imageStager.setHistogramStagingFlag( false )
 								imageStager.stage()
-								imageStager.setHistogramStagingFlag(true);
-								imageStager.setOverviewStagingFlag(false);
-								imageStager.stage()
+
+								imageStager.setHistogramStagingFlag( true )
+								imageStager.setOverviewStagingFlag( false )
 							}
-							else
-							{
-								imageStager.stage()
-							}
-							// if we are required to use R0 then we will do it in 2 steps
-						}
-						else
-						{
 							imageStager.stage()
 						}
-					}
-					else
-					{
-						imageStager.stage()
-					}
-				}
 				//imageStager.stageAll()
 				imageStager.delete()
 				imageStager = null
+
 				String xml = dataInfoService.getInfo( filename )
 				if ( xml )
 				{
@@ -171,47 +158,43 @@ class StagerService
 					def oms
 					try
 					{
-						oms = new XmlSlurper(parser).parseText(xml)
+						oms = new XmlSlurper( parser ).parseText( xml )
 					}
-					catch(e)
+					catch ( e )
 					{
 						log.error e.toString()
 						results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 						results.message = "XML is in incorrect format for file ${params.filename}"
 					}
 
-					parserPool.returnObject(parser)
-
-					def (status, message) = ingestService.ingest(oms, baseDir)
-
-					ingestMetricsService.endStaging(filename)
-
-					results = [status:status, message:message.toString()]
+					parserPool.returnObject( parser )
+					def (status, message) = ingestService.ingest( oms, baseDir )
+					results = [status: status, message: message.toString()]
 				}
 				else
 				{
 					results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 					results.message = "Unable to open file ${params.filename}"
-					ingestMetricsService.setStatus(filename, ProcessStatus.FAILED, "Unable to open file ${params.filename}")
+					ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to open file ${params.filename}" )
 				}
 			}
-			else
-			{
-				ingestMetricsService.endStaging(filename)
-			}
+
+			ingestMetricsService.endStaging( filename )
 		}
-		catch(e)
+		catch ( e )
 		{
 			results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 			results.message = "Unable to process file ${params.filename} with ERROR: ${e}"
 			log.error "${e.toString()}"
-			ingestMetricsService.setStatus(filename, ProcessStatus.FAILED, "Unable to process file ${params.filename} with ERROR: ${e}")
+			ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to process file ${params.filename} with ERROR: ${e}" )
 		}
+
 		imageStager?.delete()
 		log.info "Finished staging with result: ${results}"
 		results
 	}
-	def stageFile( String filename, String baseDir='/' )
+
+	def stageFile( String filename, String baseDir = '/' )
 	{
 		def results
 		try
@@ -223,12 +206,12 @@ class StagerService
 
 			switch ( action )
 			{
-			case Action.BUILD_OVRS:
-				xml = StagerUtil.getInfo( filename.toString())
-				break
-			case Action.INDEX_ONLY:
-				xml = dataInfoService.getInfo( filename.toString())
-				break
+				case Action.BUILD_OVRS:
+					xml = StagerUtil.getInfo( filename.toString() )
+					break
+				case Action.INDEX_ONLY:
+					xml = dataInfoService.getInfo( filename.toString() )
+					break
 			}
 			if ( xml )
 			{
@@ -237,7 +220,7 @@ class StagerService
 
 				parserPool.returnObject( parser )
 
-				def ( status, message ) = ingestService.ingest( oms, baseDir )
+				def (status, message) = ingestService.ingest( oms, baseDir )
 
 				results = message
 
@@ -267,40 +250,48 @@ class StagerService
 		{
 			log.error e.toString()
 			//println "ERROR: ${ filename } ${ e.message }"
-			e.printStackTrace(  )
+			e.printStackTrace()
 		}
 
 		return results
 	}
+
 	private String getNewFileStageProcessId()
 	{
 		String result
 		Boolean found = true
-		while(found)
+
+		while ( found )
 		{
 			result = UUID.randomUUID().toString()
-			if(OmarStageFile.findByProcessId(result)) found = true
-			else found = false
+			if ( OmarStageFile.findByProcessId( result ) )
+			{
+				found = true
+			}
+			else
+			{
+				found = false
+			}
 		}
 
 		result
 	}
-	synchronized HashMap addFileToStage(String filename, HashMap params=null)
+
+	synchronized HashMap addFileToStage( String filename, HashMap params = null )
 	{
-		HashMap result = [ status: HttpStatus.OK,
-				             message: "",
-								 results:[]
+		HashMap result = [status : HttpStatus.OK,
+						  message: "",
+						  results: []
 
 		]
-		def fileRecord = OmarStageFile.findByFilename(filename)
-		if(fileRecord)
+		def fileRecord = OmarStageFile.findByFilename( filename )
+		if ( fileRecord )
 		{
-			if(fileRecord.status == ProcessStatus.FAILED)
+			if ( fileRecord.status == ProcessStatus.FAILED )
 			{
 				fileRecord.status = ProcessStatus.READY
-				fileRecord.save(flush:true)
+				fileRecord.save( flush: true )
 			}
-			result.results << fileRecord.properties
 		}
 		else
 		{
@@ -312,7 +303,7 @@ class StagerService
 			String overviewCompressionType = params?.overviewCompressionType
 			String overviewType = params?.overviewType
 
-			fileRecord = new OmarStageFile(processId: processId,
+			fileRecord = new OmarStageFile( processId: processId,
 					filename: filename,
 					buildOverviews: buildOverviews,
 					buildHistograms: buildHistograms,
@@ -323,46 +314,46 @@ class StagerService
 					status: ProcessStatus.READY,
 					statusMessage: "Ready to stage file: ${filename}"
 			)
-			fileRecord.save(flush: true)
+			fileRecord.save( flush: true )
 
-			result.results << fileRecord.properties
 		}
 
+		result.results << fileRecord.properties
 		result
 	}
 
 	synchronized def nextFileToStage()
 	{
-		def firstObject = OmarStageFile.find("FROM OmarStageFile where status = 'READY' ORDER BY id asc")
+		def firstObject = OmarStageFile.find( "FROM OmarStageFile where status = 'READY' ORDER BY id asc" )
 		def result = [:]
 
 		firstObject?.status = "RUNNING"
 		firstObject?.statusMessage = ""
-		firstObject?.save(flush:true)
+		firstObject?.save( flush: true )
 		result = firstObject?.properties
 
 		result
 	}
 
-	HashMap updateFileStatus(String processId, ProcessStatus status, String statusMessage)
+	HashMap updateFileStatus( String processId, ProcessStatus status, String statusMessage )
 	{
-		HashMap result = [statusCode:HttpStatus.OK,
-				            status: HttpStatus.SUCCESS,
-								message:""
+		HashMap result = [statusCode: HttpStatus.OK,
+						  status    : HttpStatus.SUCCESS,
+						  message   : ""
 		]
 
-		OmarStageFile stageFileRecord = OmarStageFile.findByProcessId(processId)
+		OmarStageFile stageFileRecord = OmarStageFile.findByProcessId( processId )
 
-		if(stageFileRecord)
+		if ( stageFileRecord )
 		{
 			stageFileRecord.status = status
-			if(statusMessage != null) stageFileRecord.statusMessage = statusMessage
+			if ( statusMessage != null ) stageFileRecord.statusMessage = statusMessage
 
 			// for now, until we support archiving, ... etc.  once the status goes to finished
 			// we will remove the file from the table
-			if(stageFileRecord.status == ProcessStatus.FINISHED)
+			if ( stageFileRecord.status == ProcessStatus.FINISHED )
 			{
-				if(!stageFileRecord.delete(flush:true))
+				if ( ! stageFileRecord.delete( flush: true ) )
 				{
 					result.statusCode = HttpStatus.INTERNAL_SERVER_ERROR
 					result.status = HttpStatus.ERROR
@@ -371,7 +362,7 @@ class StagerService
 			}
 			else
 			{
-				if(!stageFileRecord.save(flush:true))
+				if ( ! stageFileRecord.save( flush: true ) )
 				{
 					result.statusCode = HttpStatus.INTERNAL_SERVER_ERROR
 					result.status = HttpStatus.ERROR
@@ -387,5 +378,4 @@ class StagerService
 		}
 		result
 	}
-
 }

@@ -14,7 +14,7 @@ USER 1001
 WORKDIR /usr/share/omar
 CMD java -server -Xms256m -Xmx1024m -Djava.awt.headless=true -XX:+CMSClassUnloadingEnabled -XX:+UseGCOverheadLimit -Djava.security.egd=file:/dev/./urandom -jar omar-stager-app-1.0.0-SNAPSHOT.jar
 ```
-Ref: [omar-ossim-base](../../../omar-ossim-base/docs/install-guide/omar-base/)
+Ref: [omar-ossim-base](../../../omar-ossim-base/docs/install-guide/omar-ossim-base/)
 
 ## JAR
 [http://artifacts.radiantbluecloud.com/artifactory/webapp/#/artifacts/browse/tree/General/omar-local/io/ossim/omar/apps/omar-stager-app](http://artifacts.radiantbluecloud.com/artifactory/webapp/#/artifacts/browse/tree/General/omar-local/io/ossim/omar/apps/omar-stager-app)
@@ -23,13 +23,6 @@ Ref: [omar-ossim-base](../../../omar-ossim-base/docs/install-guide/omar-base/)
 
 You can insert any common YAML tags found at the [Common Config Settings](../../../omar-common/docs/install-guide/omar-common/#common-config-settings).  
 
-```
-quartz:
-  jdbcStore: false
-  threadPool:
-    threadCount: 4
-
-```
 * **quartz**
  * **jdbcStore:** This service supports background jobs using the quartz framework.  Just fix this to not use the jdbcStore.   For now the requests are not persistent.
  * **threadPool.threadCount** Quartz allows one to adjust the number of concurrent threads running.  Here we default to 4 threads.  This will allow 4 concurrent stagers to run for this service.

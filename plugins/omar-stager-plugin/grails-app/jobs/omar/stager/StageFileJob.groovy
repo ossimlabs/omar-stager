@@ -4,7 +4,7 @@ import omar.core.ProcessStatus
 class StageFileJob {
    def stagerService
    def ingestMetricsService
-   def concurrent=true
+   def concurrent = false
    static triggers = {
       simple name: 'StageFileJobTrigger', group: 'StageFileJobGroup', repeatInterval: 5000l
    }

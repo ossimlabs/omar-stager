@@ -14,12 +14,12 @@ buildscript {
   }
   dependencies {
     classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-    classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2"
+    classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.2"
   }
 }
 
 plugins {
-  id "com.github.ben-manes.versions" version "0.13.0"
+  id "com.github.ben-manes.versions" version "0.15.0"
 }
 
 apply plugin: "eclipse"
@@ -52,7 +52,15 @@ dependencyManagement {
   applyMavenExclusions false
 }
 
+grails {
+  plugins {
+    compile project(':omar-oms-plugin')
+    compile project(':omar-ingest-metrics-plugin')
+  }
+}
+
 dependencies {
+/*
   if ( System.getenv('O2_DEV_HOME')) {
     compile project(':omar-oms-plugin')
     compile project(':omar-ingest-metrics-plugin')
@@ -60,27 +68,40 @@ dependencies {
     compile(group: "io.ossim.omar.plugins", name: "omar-oms-plugin", version: "1.1.0-${buildVersionTag}", changing: jarArtifactsChanging)
     compile(group: "io.ossim.omar.plugins", name: "omar-ingest-metrics-plugin", version: "1.0.0-${buildVersionTag}", changing: jarArtifactsChanging)
   }
-
+*/
   compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
   compile "commons-io:commons-io:2.4"
-
   compile "org.grails.plugins:quartz:2.0.9"
+  compile group: 'org.codehaus.gpars', name: 'gpars', version: '1.2.1'
+
   compile "org.springframework.boot:spring-boot-starter-logging"
+  compile "org.springframework.boot:spring-boot-autoconfigure"
+  compile "org.grails:grails-core"
   compile "org.springframework.boot:spring-boot-starter-actuator"
   compile "org.springframework.boot:spring-boot-starter-tomcat"
-  compile "org.grails:grails-dependencies:3.1.14"
   compile "org.grails:grails-web-boot"
+  compile "org.grails:grails-logging"
+  compile "org.grails:grails-plugin-rest"
+  compile "org.grails:grails-plugin-databinding"
+  compile "org.grails:grails-plugin-i18n"
+  compile "org.grails:grails-plugin-services"
+  compile "org.grails:grails-plugin-url-mappings"
+  compile "org.grails:grails-plugin-interceptors"
   compile "org.grails.plugins:cache"
+  compile "org.grails.plugins:async"
   compile "org.grails.plugins:scaffolding"
+  compile "org.grails.plugins:gsp"
   console "org.grails:grails-console"
   profile "org.grails.profiles:web-plugin"
   provided "org.grails:grails-plugin-services"
   provided "org.grails:grails-plugin-domain-class"
-  runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.8.2"
+  runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.2"
+  testCompile "org.grails:grails-gorm-testing-support"
   testCompile "org.grails:grails-plugin-testing"
   testCompile "org.grails.plugins:geb"
-  testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0"
-  testRuntime "net.sourceforge.htmlunit:htmlunit:2.23"
+  testCompile "org.grails:grails-web-testing-support"
+  testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+  testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 }
 
 assets {

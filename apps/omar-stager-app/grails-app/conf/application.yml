@@ -143,4 +143,9 @@ videoStreaming:
   flashDirRoot: /opt/local/apache2/htdocs/videos
 #  flashDirRoot: /var/www/html/videos
   flashUrlRoot: http://localhost/videos
-              
+
+---
+swagger:
+  schemes:
+    - HTTPS
+    - HTTP

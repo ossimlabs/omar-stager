@@ -2,6 +2,7 @@ package omar.stager
 
 import groovy.io.FileType
 import groovy.io.FileVisitResult
+import groovy.json.JsonBuilder
 
 import org.apache.commons.io.FilenameUtils
 

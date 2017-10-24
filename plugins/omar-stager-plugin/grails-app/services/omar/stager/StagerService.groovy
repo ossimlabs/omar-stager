@@ -196,9 +196,9 @@ class StagerService
 			}
 
 			internalTime = System.currentTimeMillis()
-			processingTime = internalTime - starttime
+			procTime = internalTime - starttime
 
-			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: processingTime, inboxuri: uri.toString(),
+			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, inboxuri: uri.toString(),
 			filename: filename)
 
 			log.info stager_logs.toString()

@@ -120,7 +120,7 @@ class StagerService
 		{
 			ingestMetricsService.startStaging( filename )
 			ingestdate = new Date().format("YYYY-MM-DD HH:mm:ss.Ms")
-			log.info "Ingested an image at time: " + ingestdate
+			log.info "Ingested an image at time " + ingestdate
 
 			starttime = System.currentTimeMillis()
 

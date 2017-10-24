@@ -198,10 +198,10 @@ class StagerService
 			internalTime = System.currentTimeMillis()
 			procTime = internalTime - starttime
 
-			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, inboxuri: uri.toString(),
+			/*stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, inboxuri: uri.toString(),
 			filename: filename)
 
-			log.info stager_logs.toString()
+			log.info stager_logs.toString() */
 
 			ingestMetricsService.endStaging( filename )
 		}

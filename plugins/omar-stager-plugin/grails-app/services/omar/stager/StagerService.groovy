@@ -105,13 +105,28 @@ class StagerService
 		def results = [status: HttpStatus.OK, message: ""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
+		ingestDate = new Date()
+		internalTime = new Date()
+
+		def starttime
+		def endtime
+		def procTime
+		def ingestdate
+		def stager_logs
+
 
 		try
 		{
 			ingestMetricsService.startStaging( filename )
+			ingestdate = new Date().format("YYYY-MM-DD HH:mm:ss.Ms")
+			log.info "Ingested an image at time: " + ingestdate
+
+			starttime = System.currentTimeMillis()
+
 			if ( imageStager.open( params.filename ) )
 			{
 				URI uri = new URI( params.filename )
+
 
 				String scheme = uri.scheme
 				if ( ! scheme ) scheme = "file"
@@ -178,6 +193,14 @@ class StagerService
 					ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to open file ${params.filename}" )
 				}
 			}
+
+			internalTime = System.currentTimeMillis()
+			processingTime = internalTime - starttime
+
+			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: processingTime, inboxuri: uri.toString()
+			filename: filename)
+
+			log.info stager_logs.toString()
 
 			ingestMetricsService.endStaging( filename )
 		}

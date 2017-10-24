@@ -6,6 +6,8 @@ import omar.core.ProcessStatus
 import omar.core.HttpStatus
 import joms.oms.ImageStager
 import grails.transaction.Transactional
+import groovy.json.JsonBuilder
+
 
 @Slf4j
 @Transactional

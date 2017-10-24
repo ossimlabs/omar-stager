@@ -107,7 +107,7 @@ class StagerService
 		def results = [status: HttpStatus.OK, message: ""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
-		internalTime = new Date()
+		def internalTime = new Date()
 
 		def starttime
 		def endtime

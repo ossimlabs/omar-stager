@@ -120,7 +120,6 @@ class StagerService
 		{
 			ingestMetricsService.startStaging( filename )
 			ingestdate = new Date().format("YYYY-MM-DD HH:mm:ss.Ms")
-			log.info "Ingested an image at time " + ingestdate
 
 			starttime = System.currentTimeMillis()
 
@@ -128,6 +127,8 @@ class StagerService
 			{
 				URI uri = new URI( params.filename )
 
+				log.info "Ingested an image at time " + ingestdate
+				log.info "uri " + uri.toString()
 
 				String scheme = uri.scheme
 				if ( ! scheme ) scheme = "file"
@@ -198,10 +199,10 @@ class StagerService
 			internalTime = System.currentTimeMillis()
 			procTime = internalTime - starttime
 
-			/*stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, inboxuri: uri.toString(),
+			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, inboxuri: uri.toString(),
 			filename: filename)
 
-			log.info stager_logs.toString() */
+			log.info stager_logs.toString()
 
 			ingestMetricsService.endStaging( filename )
 		}

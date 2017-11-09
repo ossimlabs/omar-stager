@@ -40,9 +40,6 @@ node(""){
         dir("omar-oms") {
             git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-oms.git"
         }
-        dir("omar-core") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-core.git"
-        }
         dir("omar-opir") {
             git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-opir.git"
         }
@@ -52,29 +49,11 @@ node(""){
         dir(appName) {
             git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/${appName}.git"
         }
-
         dir(omarCommonProjName) {
             git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/${omarCommonProjName}.git"
         }
 
         notifyObj = load "${workspaceDir}/ossim-ci/jenkins/pipeline/notify.groovy"
-    }
-
-    try {
-        stage('SonarQube analysis') {
-            withSonarQubeEnv('sonar_cloud') {
-                // requires SonarQube Scanner for Gradle 2.1+
-                // It's important to add --info because of SONARJNKNS-281
-                sh """
-                  pushd ${workspaceDir}/${appName}/
-                  ./gradlew --info sonarqube -Dsonar.projectKey=${appName}
-                  popd
-                """
-            }
-        }
-    }
-    catch (e) {
-        echo e.toString()
     }
 
     try {
@@ -113,6 +92,23 @@ node(""){
         echo e.toString()
         currentBuild.result = "FAILED"
         notifyObj?.notifyFailed()
+    }
+    
+    try {
+        stage('SonarQube analysis') {
+            withSonarQubeEnv('sonar_cloud') {
+                // requires SonarQube Scanner for Gradle 2.1+
+                // It's important to add --info because of SONARJNKNS-281
+                sh """
+                  pushd ${workspaceDir}/${appName}/
+                  ./gradlew --info sonarqube -Dsonar.projectKey=${appName}
+                  popd
+                """
+            }
+        }
+    }
+    catch (e) {
+        echo e.toString()
     }
   stage("Clean Workspace"){
      step([$class: 'WsCleanup'])

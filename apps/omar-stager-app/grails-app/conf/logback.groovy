@@ -20,7 +20,6 @@ appender('JSON', ConsoleAppender) {
 
 root(ERROR, ['STDOUT'])
 logger("omar.stager.StagerService", INFO, ['JSON'], false)
-logger("omar.avro.AvroService", INFO, ['JSON'], false)
 logger("omar.raster.RasterDataSetService", INFO, ['JSON'], false)
 
 def targetDir = BuildSettings.TARGET_DIR

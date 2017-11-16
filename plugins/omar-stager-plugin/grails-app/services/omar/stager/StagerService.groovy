@@ -6,6 +6,8 @@ import omar.core.ProcessStatus
 import omar.core.HttpStatus
 import joms.oms.ImageStager
 import grails.transaction.Transactional
+import groovy.json.JsonBuilder
+
 
 @Slf4j
 @Transactional
@@ -105,13 +107,28 @@ class StagerService
 		def results = [status: HttpStatus.OK, message: ""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
+		def internalTime
+
+		def starttime
+		def endtime
+		def procTime
+		def ingestdate
+		def stager_logs
+
 
 		try
 		{
 			ingestMetricsService.startStaging( filename )
+			ingestdate = new Date().format("YYYY-MM-DD HH:mm:ss.Ms")
+
+			starttime = System.currentTimeMillis()
+
 			if ( imageStager.open( params.filename ) )
 			{
 				URI uri = new URI( params.filename )
+
+				log.info "Ingested an image at time " + ingestdate
+				log.info "uri " + uri.toString()
 
 				String scheme = uri.scheme
 				if ( ! scheme ) scheme = "file"
@@ -178,6 +195,13 @@ class StagerService
 					ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to open file ${params.filename}" )
 				}
 			}
+
+			internalTime = System.currentTimeMillis()
+			procTime = internalTime - starttime
+
+			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, filename: filename)
+
+			log.info stager_logs.toString()
 
 			ingestMetricsService.endStaging( filename )
 		}

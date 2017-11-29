@@ -112,7 +112,7 @@ class StagerService
 
 		def ingestdate
 		def stager_logs
-
+		def responseTime
 
 		try
 		{

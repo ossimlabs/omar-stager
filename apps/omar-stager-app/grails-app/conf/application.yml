@@ -1,4 +1,44 @@
 ---
+environments:
+  production:
+    dataSource:
+      pooled: true
+      jmxExport: true
+      driverClassName: org.postgresql.Driver
+      dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+      url: jdbc:postgres://localhost:5432/omar_db
+      username: postgres
+      password: password
+
+logging:
+  config: classpath:logback.groovy
+
+quartz:
+  # This service supports background jobs using the quartz framework.
+  # Just fix this to not use the jdbcStore.
+  # For now the requests are not persistent.
+  jdbcStore: false
+  threadPool:
+    # Quartz allows one to adjust the number of concurrent threads running.
+    # Here we default to 4 threads.
+    # This will allow 4 concurrent stagers to run for this service.
+    threadCount: 2
+
+# Set the context path for tha pplication.
+#server:
+#  contextPath: /omar-stager
+
+# Define the http protocols that swagger can use
+swagger:
+  schemes:
+    - HTTPS
+    - HTTP
+
+videoStreaming:
+  flashDirRoot: /opt/local/apache2/htdocs/videos
+  flashUrlRoot: http://localhost/videos
+
+---
 grails:
     cors:
       enabled: true
@@ -109,11 +149,16 @@ hibernate:
         use_second_level_cache: false
         use_query_cache: false
 dataSource:
-    pooled: true
-    jmxExport: true
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
+    # This is defined above
+    #pooled: true
+    # This is defined above
+    #jmxExport: true
+    # This is defined above
+    #driverClassName: org.h2.Driver
+    # This is defined above
+    #username: sa
+    # This is defined above
+    #password: ''
 
 environments:
     development:
@@ -126,8 +171,14 @@ environments:
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
+<<<<<<< HEAD
             dbCreate: update
             url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+=======
+            dbCreate: none
+            # This is defined above
+            #url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+>>>>>>> 80c92c8a9cc18ad809d807ba2ac5684273fadc0f
             properties:
                 jmxEnabled: true
                 initialSize: 5
@@ -146,22 +197,3 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
----
-quartz:
-  jdbcStore: false
-  threadPool:
-    threadCount: 4
-
-videoStreaming:
-  flashDirRoot: /opt/local/apache2/htdocs/videos
-#  flashDirRoot: /var/www/html/videos
-  flashUrlRoot: http://localhost/videos
-
----
-swagger:
-  schemes:
-    - HTTPS
-    - HTTP
-
-logging:
-  config: classpath:logback.groovy

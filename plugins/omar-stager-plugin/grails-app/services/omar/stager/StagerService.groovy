@@ -103,25 +103,21 @@ class StagerService
 
 	def stageFileJni( HashMap params, String baseDir = '/' )
 	{
-		log.info "Staging ${params}"
 		def results = [status: HttpStatus.OK, message: ""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
-		def internalTime
 
-		def starttime
-		def endtime
-		def procTime
+		def requestType = "GET"
+		def requestMethod = "stageFileJni"
+
 		def ingestdate
 		def stager_logs
-
+		def responseTime
 
 		try
 		{
 			ingestMetricsService.startStaging( filename )
-			ingestdate = new Date().format("YYYY-MM-DD HH:mm:ss.Ms")
-
-			starttime = System.currentTimeMillis()
+			ingestdate = new Date()
 
 			if ( imageStager.open( params.filename ) )
 			{
@@ -196,10 +192,12 @@ class StagerService
 				}
 			}
 
-			internalTime = System.currentTimeMillis()
-			procTime = internalTime - starttime
+			Date endTime = new Date()
+			responseTime = Math.abs(ingestdate.getTime() - endTime.getTime())
 
-			stager_logs = new JsonBuilder(ingestdate: ingestdate, procTime: procTime, filename: filename)
+			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
+					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
 
 			log.info stager_logs.toString()
 

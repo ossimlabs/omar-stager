@@ -171,14 +171,10 @@ environments:
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
-<<<<<<< HEAD
             dbCreate: update
             url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-=======
-            dbCreate: none
             # This is defined above
             #url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
->>>>>>> 80c92c8a9cc18ad809d807ba2ac5684273fadc0f
             properties:
                 jmxEnabled: true
                 initialSize: 5

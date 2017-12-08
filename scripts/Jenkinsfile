@@ -20,37 +20,37 @@ node(""){
 
     stage("Checkout"){
         dir("ossim-ci") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/ossim-ci.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/ossim-ci.git"
         }
         dir("omar-core") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-core.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-core.git"
         }
         dir("omar-hibernate-spatial") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-hibernate-spatial.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-hibernate-spatial.git"
         }
         dir("omar-ingest-metrics") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-ingest-metrics.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-ingest-metrics.git"
         }
         dir("omar-raster") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-raster.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-raster.git"
         }
         dir("omar-video") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-video.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-video.git"
         }
         dir("omar-oms") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-oms.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-oms.git"
         }
         dir("omar-opir") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-opir.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-opir.git"
         }
         dir("omar-openlayers") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/omar-openlayers.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-openlayers.git"
         }
         dir(appName) {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/${appName}.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/${appName}.git"
         }
         dir(omarCommonProjName) {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "https://github.com/ossimlabs/${omarCommonProjName}.git"
+            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/${omarCommonProjName}.git"
         }
 
         notifyObj = load "${workspaceDir}/ossim-ci/jenkins/pipeline/notify.groovy"

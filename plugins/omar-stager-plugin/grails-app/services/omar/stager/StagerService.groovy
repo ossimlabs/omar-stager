@@ -123,6 +123,9 @@ class StagerService
 			{
 				URI uri = new URI( params.filename )
 
+				log.info "Ingested an image at time " + ingestdate
+				log.info "uri " + uri.toString()
+
 				String scheme = uri.scheme
 				if ( ! scheme ) scheme = "file"
 				if ( scheme != "file" )
@@ -209,6 +212,7 @@ class StagerService
 		}
 
 		imageStager?.delete()
+		log.info "Finished staging with result: ${results}"
 		results
 	}
 

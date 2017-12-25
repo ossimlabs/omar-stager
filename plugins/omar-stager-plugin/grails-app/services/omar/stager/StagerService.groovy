@@ -46,60 +46,6 @@ class StagerService
 		session.clear()
 	}
 
-/*
-  def popAndAddStagerQueueItem()
-  {
-    def result = 0
-    def nthreads = grailsApplication.config.stager.queue.threads ?: 4
-    try
-    {
-      StagerQueueItem.withTransaction {
-        def records = [];
-
-        try
-        {
-          records = StagerQueueItem.list( cache: false,
-              sort: "dateCreated",
-              max: 100,
-              order: "desc" )
-
-        }
-        catch ( def e )
-        {
-          cleanUpGorm()
-        }
-        try
-        {
-          records.each { record ->
-            record.status = "indexing"
-            record.save()
-          }
-        }
-        catch ( def e )
-        {
-          cleanUpGorm()
-        }
-        withPool() {
-          records.collectParallel { item ->
-            def msg = new HttpStatusMessage();
-            dataManagerService.add( msg, [datainfo: item.dataInfo] )
-          }
-        }
-        result += records.size();
-        records.each { record ->
-          record.delete()
-        }
-      }
-    }
-    catch ( def e )
-    {
-      println e
-    }
-
-    cleanUpGorm()
-    result
-  }
-*/
 
 	def stageFileJni( HashMap params, String baseDir = '/' )
 	{
@@ -192,7 +138,7 @@ class StagerService
 			Date endTime = new Date()
 			responseTime = Math.abs(ingestdate.getTime() - endTime.getTime())
 
-			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+			stager_logs = new JsonBuilder(timestampAAAA: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
 					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
 					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
 

@@ -138,7 +138,36 @@ class StagerService
 			Date endTime = new Date()
 			responseTime = Math.abs(ingestdate.getTime() - endTime.getTime())
 
-			stager_logs = new JsonBuilder(timestampAAAA: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+
+			/* Behind the scenes values needed:
+			    startTime (orginal sqs start time)
+			 */
+			/* Logs listed in ticket:
+			ImageID
+			MissionID
+			AcquisitionDate // HAVE
+			FileName // HAVE
+			FileSize // Avro needs to find
+			SQS Notification Time
+			Staging Time // HAVE (can derive)
+			Copy Time // HAVE
+			Total Time from AcquisitionDate/Time to Ingested Date/Time // HAVE (can derive)
+			 */
+
+
+//			def logs = new JsonBuilder(
+//					imageId: ,
+//					missionId: ,
+//					acquisitionDate: ,
+//					fileName: ,
+//					fileSize: ,
+//					sqsNotificationTime: ,
+//					stagingTime: ,
+//					copyTime: ,
+//					totalIngestTime:
+//			)
+
+			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
 					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
 					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
 

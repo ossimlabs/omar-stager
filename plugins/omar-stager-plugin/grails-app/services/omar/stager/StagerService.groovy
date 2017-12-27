@@ -167,11 +167,11 @@ class StagerService
 //					totalIngestTime:
 //			)
 
-			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
-					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
-					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
+//			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
+//					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
+//					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
 
-			log.info stager_logs.toString()
+//			log.info stager_logs.toString()
 
 			ingestMetricsService.endStaging( filename )
 		}

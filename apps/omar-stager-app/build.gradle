@@ -25,7 +25,7 @@ buildscript {
           """RUN chown -R 1001:0 \$HOME""",
           "USER 1001",
           "WORKDIR \$HOME",
-          "EXPOSE 8082",
+          "EXPOSE 8080",
           "CMD \$HOME/run.sh"
        ]
      }

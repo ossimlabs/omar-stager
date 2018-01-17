@@ -19,7 +19,6 @@ class StagerService
 	def sessionFactory
 
 
-	def parserPool
 	def ingestService
 	def ingestMetricsService
 	def dataInfoService
@@ -110,11 +109,10 @@ class StagerService
 				String xml = dataInfoService.getInfo( filename )
 				if ( xml )
 				{
-					def parser = parserPool.borrowObject()
 					def oms
 					try
 					{
-						oms = new XmlSlurper( parser ).parseText( xml )
+						oms = new XmlSlurper( ).parseText( xml )
 					}
 					catch ( e )
 					{
@@ -123,7 +121,6 @@ class StagerService
 						results.message = "XML is in incorrect format for file ${params.filename}"
 					}
 
-					parserPool.returnObject( parser )
 					def (status, message) = ingestService.ingest( oms, baseDir )
 					results = [status: status, message: message.toString()]
 				}
@@ -208,10 +205,8 @@ class StagerService
 			}
 			if ( xml )
 			{
-				def parser = parserPool.borrowObject()
-				def oms = new XmlSlurper( parser ).parseText( xml )
+				def oms = new XmlSlurper(  ).parseText( xml )
 
-				parserPool.returnObject( parser )
 
 				def (status, message) = ingestService.ingest( oms, baseDir )
 

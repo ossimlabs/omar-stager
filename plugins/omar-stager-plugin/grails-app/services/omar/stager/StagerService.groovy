@@ -20,7 +20,6 @@ class StagerService
 
 
 	def ingestService
-	def ingestMetricsService
 	def dataInfoService
 
 	enum Action {
@@ -61,7 +60,6 @@ class StagerService
 
 		try
 		{
-			ingestMetricsService.startStaging( filename )
 			ingestdate = new Date()
 
 			if ( imageStager.open( params.filename ) )
@@ -128,7 +126,6 @@ class StagerService
 				{
 					results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 					results.message = "Unable to open file ${params.filename}"
-					ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to open file ${params.filename}" )
 				}
 			}
 
@@ -170,14 +167,12 @@ class StagerService
 
 //			log.info stager_logs.toString()
 
-			ingestMetricsService.endStaging( filename )
 		}
 		catch ( e )
 		{
 			results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 			results.message = "Unable to process file ${params.filename} with ERROR: ${e}"
 			log.error "${e.toString()}"
-			ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to process file ${params.filename} with ERROR: ${e}" )
 		}
 
 		imageStager?.delete()

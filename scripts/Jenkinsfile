@@ -26,9 +26,6 @@ node(""){
         dir("omar-hibernate-spatial") {
             git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-hibernate-spatial.git"
         }
-        dir("omar-ingest-metrics") {
-            git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-ingest-metrics.git"
-        }
         dir("omar-raster") {
             git branch: "${OSSIM_GIT_BRANCH}", url: "${GIT_PUBLIC_SERVER_URL}/omar-raster.git"
         }

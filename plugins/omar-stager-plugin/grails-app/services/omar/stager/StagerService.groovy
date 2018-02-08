@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import omar.core.Repository
 import omar.core.ProcessStatus
 import omar.core.HttpStatus
+import omar.core.DateUtil
 import joms.oms.ImageStager
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
@@ -161,9 +162,9 @@ class StagerService
 //					totalIngestTime:
 //			)
 
-//			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
-//					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
-//					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
+//			stager_logs = new JsonBuilder(timestamp: DateUtil.formatUTC(ingestdate), requestType: requestType,
+//					requestMethod: requestMethod, httpStatus: results.status, message: results.message, filename: filename,
+//					endTime: DateUtil.formatUTC(endTime), responseTime: responseTime)
 
 //			log.info stager_logs.toString()
 

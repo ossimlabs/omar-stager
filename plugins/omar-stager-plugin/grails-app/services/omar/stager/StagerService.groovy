@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import omar.core.Repository
 import omar.core.ProcessStatus
 import omar.core.HttpStatus
+import omar.core.DateUtil
 import joms.oms.ImageStager
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
@@ -20,7 +21,6 @@ class StagerService
 
 
 	def ingestService
-	def ingestMetricsService
 	def dataInfoService
 
 	enum Action {
@@ -61,7 +61,6 @@ class StagerService
 
 		try
 		{
-			ingestMetricsService.startStaging( filename )
 			ingestdate = new Date()
 
 			if ( imageStager.open( params.filename ) )
@@ -128,7 +127,6 @@ class StagerService
 				{
 					results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 					results.message = "Unable to open file ${params.filename}"
-					ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to open file ${params.filename}" )
 				}
 			}
 
@@ -164,20 +162,18 @@ class StagerService
 //					totalIngestTime:
 //			)
 
-//			stager_logs = new JsonBuilder(timestamp: ingestdate.format("yyyy-MM-dd hh:mm:ss.ms"), requestType: requestType,
-//					requestMethod: requestMethod, status: results.status, message: results.message, filename: filename,
-//					endTime: endTime.format("yyyy-MM-dd hh:mm:ss.ms"), responseTime: responseTime)
+//			stager_logs = new JsonBuilder(timestamp: DateUtil.formatUTC(ingestdate), requestType: requestType,
+//					requestMethod: requestMethod, httpStatus: results.status, message: results.message, filename: filename,
+//					endTime: DateUtil.formatUTC(endTime), responseTime: responseTime)
 
 //			log.info stager_logs.toString()
 
-			ingestMetricsService.endStaging( filename )
 		}
 		catch ( e )
 		{
 			results.status = HttpStatus.UNSUPPORTED_MEDIA_TYPE
 			results.message = "Unable to process file ${params.filename} with ERROR: ${e}"
 			log.error "${e.toString()}"
-			ingestMetricsService.setStatus( filename, ProcessStatus.FAILED, "Unable to process file ${params.filename} with ERROR: ${e}" )
 		}
 
 		imageStager?.delete()

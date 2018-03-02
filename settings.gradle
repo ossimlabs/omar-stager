@@ -9,7 +9,6 @@ if ( O2_DEV_HOME ) {
            'omar-oms-plugin',
            'omar-core-plugin',
            'omar-hibernate-spatial-plugin',
-           'omar-ingest-metrics-plugin',
            'omar-opir-plugin',
            'omar-openlayers-plugin'
 
@@ -21,7 +20,6 @@ if ( O2_DEV_HOME ) {
    project(':omar-core-plugin').projectDir = "${O2_DEV_HOME}/omar-core/plugins/omar-core-plugin" as File
    project(':omar-hibernate-spatial-plugin').projectDir = "${O2_DEV_HOME}/omar-hibernate-spatial/plugins/omar-hibernate-spatial-plugin" as File
    project(':omar-oms-plugin').projectDir = "${O2_DEV_HOME}/omar-oms/plugins/omar-oms-plugin" as File
-   project(':omar-ingest-metrics-plugin').projectDir = "${O2_DEV_HOME}/omar-ingest-metrics/plugins/omar-ingest-metrics-plugin" as File
    project(':omar-opir-plugin').projectDir = "${O2_DEV_HOME}/omar-opir/plugins/omar-opir-plugin" as File
    project(':omar-openlayers-plugin').projectDir = "${O2_DEV_HOME}/omar-openlayers/plugins/omar-openlayers-plugin" as File
 

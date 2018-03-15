@@ -12,7 +12,9 @@ class BeService {
 
 	def getBeInfo( be ) {
 		def url = "${ grailsApplication.config.beInfoUrl }&BE=${ be }"
+		println url
 		def text = url.getText()
+		println text
 		def json = new JsonSlurper().parseText( text )
 
 
@@ -51,7 +53,7 @@ class BeService {
 		return
 	}
 
-	def updateBeTable() { //( beNumber, overwrite ) {
+	def updateBeTable( beNumber, overwrite ) {
 		def bes = BasicEncyclopedia.findAllByBeLike( "%${ beNumber }%" )
 
 		// if no BEs exists, make a new entry

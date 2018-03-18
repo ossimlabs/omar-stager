@@ -11,8 +11,7 @@ class BeService {
 
 
 	def getBeInfo( be ) {
-		def url = "${ grailsApplication.config.beInfoUrl }&BE=${ be }"
-		println url
+		def url = new URL( "${ grailsApplication.config.beInfoUrl }&BE=${ be }" )
 		def text = url.getText()
 		println text
 		def json = new JsonSlurper().parseText( text )

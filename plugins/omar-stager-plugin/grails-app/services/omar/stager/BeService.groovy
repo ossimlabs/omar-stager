@@ -1,10 +1,12 @@
 package omar.stager
 
 
-import groovy.json.JsonSlurper
 import com.vividsolutions.jts.io.WKTReader
+import grails.transaction.Transactional
+import groovy.json.JsonSlurper
 
 
+@Transactional
 class BeService {
 
 	def grailsApplication

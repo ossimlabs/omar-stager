@@ -85,6 +85,7 @@ class BeService {
 				println be.geometry
 				def location = be.geometry.coordinates
 				info.location = new WKTReader().read( "POINT( ${ location.join( " " ) } )" )
+				info.location.setSRID( 4326 )
 
 				saveBeInfo( new BasicEncyclopedia(), info )
 			}

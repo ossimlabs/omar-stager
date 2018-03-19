@@ -11,13 +11,24 @@ class BeService {
 
 
 	def getBeInfo( be ) {
-		def url = new URL( "${ grailsApplication.config.beInfoUrl }&BE=${ be }" )
-		def text = url.getText()
-		println text
-		def json = new JsonSlurper().parseText( text )
+		//def url = new URL( "${ grailsApplication.config.beInfoUrl }&BE=${ be }" )
+		//def text = url.getText()
+		//println text
+		//def json = new JsonSlurper().parseText( text )
 
 
-		return json
+		//return json
+		return [
+			features: [
+				[
+					be: "1234567890",
+					suffix: "offusix",
+					geometry: [
+						coordinates: [ 45.7, 58.9 ]
+					]
+				]
+			]
+		]
 	}
 
 	def saveBeInfo( be, info ) {

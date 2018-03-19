@@ -34,6 +34,9 @@ class BeService {
 	}
 
 	def saveBeInfo( be, info ) {
+		println be
+		println be.properties
+
 		be.activity = info.activity
 		be.affiliation = info.affiliation
 		be.be = info.be
@@ -56,6 +59,7 @@ class BeService {
 		be.suffix = info.suffix
 		be.symbolId = info.symbolid
 
+		println be.properties
 		be.save()
 		if ( be.hasErrors() ) {
 			be.errors.allErrors.each { println it }

@@ -72,7 +72,7 @@ class BeService {
 		if ( bes.size() < 1 ) {
 			def beInfo = getBeInfo( beNumber )
 			beInfo.features.each {
-				println be
+				println it
 				def be = it
 				def info = be.properties
 

@@ -21,8 +21,10 @@ class BeService {
 		return [
 			features: [
 				[
-					be: "1234567890",
-					suffix: "offusix",
+					properties: [
+						be: "1234567890",
+						suffix: "offusix"
+					],
 					geometry: [
 						coordinates: [ 45.7, 58.9 ]
 					]
@@ -70,9 +72,11 @@ class BeService {
 		if ( bes.size() < 1 ) {
 			def beInfo = getBeInfo( beNumber )
 			beInfo.features.each {
+				println be
 				def be = it
 				def info = be.properties
 
+				println be.geometry
 				def location = be.geometry.coordinates
 				info.location = new WKTReader().read( "POINT( ${ location.join( " " ) } )" )
 

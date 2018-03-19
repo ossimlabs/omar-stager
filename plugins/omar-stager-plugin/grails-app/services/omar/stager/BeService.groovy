@@ -13,32 +13,15 @@ class BeService {
 
 
 	def getBeInfo( be ) {
-		//def url = new URL( "${ grailsApplication.config.beInfoUrl }&BE=${ be }" )
-		//def text = url.getText()
-		//println text
-		//def json = new JsonSlurper().parseText( text )
+		def url = new URL( "${ grailsApplication.config.beInfoUrl }&BE=${ be }" )
+		def text = url.getText()
+		def json = new JsonSlurper().parseText( text )
 
 
-		//return json
-		return [
-			features: [
-				[
-					properties: [
-						be: "1234567890",
-						suffix: "offusix"
-					],
-					geometry: [
-						coordinates: [ 45.7, 58.9 ]
-					]
-				]
-			]
-		]
+		return json
 	}
 
 	def saveBeInfo( be, info ) {
-		println be
-		println be.properties
-
 		be.activity = info.activity
 		be.affiliation = info.affiliation
 		be.be = info.be
@@ -61,7 +44,6 @@ class BeService {
 		be.suffix = info.suffix
 		be.symbolId = info.symbolid
 
-		println be.properties
 		be.save()
 		if ( be.hasErrors() ) {
 			be.errors.allErrors.each { println it }
@@ -78,11 +60,9 @@ class BeService {
 		if ( bes.size() < 1 ) {
 			def beInfo = getBeInfo( beNumber )
 			beInfo.features.each {
-				println it
 				def be = it
 				def info = be.properties
 
-				println be.geometry
 				def location = be.geometry.coordinates
 				info.location = new WKTReader().read( "POINT( ${ location.join( " " ) } )" )
 				info.location.setSRID( 4326 )

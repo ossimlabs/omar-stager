@@ -72,7 +72,8 @@ class StagerService
 				if ( scheme != "file" )
 				{
 					params.buildHistograms = false
-					params.buildOverviews = false
+					params.buildOverviews  = false
+					params.buildThumbnails = false
 				}
 				//imageStager.setDefaults()
 				//imageStager.stageAll()
@@ -82,10 +83,13 @@ class StagerService
 						{
 							imageStager.setEntry( it )
 							imageStager.setDefaults()
+							imageStager.setThumbnailStagingFlag( params.buildThumbnails, params.thumbnailSize )
 							imageStager.setHistogramStagingFlag( params.buildHistograms )
 							imageStager.setOverviewStagingFlag( params.buildOverviews )
 							imageStager.setCompressionType( params.overviewCompressionType )
 							imageStager.setOverviewType( params.overviewType )
+							imageStager.setThumbnailType( params.thumbnailType )
+							imageStager.setThumbnailStretchType( params.thumbnailStretchType )
 							imageStager.setUseFastHistogramStagingFlag( params.useFastHistogramStaging )
 							imageStager.setQuietFlag( true )
 
@@ -280,21 +284,29 @@ class StagerService
 		else
 		{
 			String processId = getNewFileStageProcessId()
+			Boolean buildThumbnails = params?.buildThumbnails
 			Boolean buildOverviews = params?.buildOverviews
 			Boolean buildHistograms = params?.buildHistograms
 			Boolean buildHistogramsWithR0 = params?.buildHistogramsWithR0
 			Boolean useFastHistogramStaging = params?.useFastHistogramStaging
 			String overviewCompressionType = params?.overviewCompressionType
 			String overviewType = params?.overviewType
+			String thumbnailSize = params?.thumbnailSize
+			String thumbnailType = params?.thumbnailType
+			String thumbnailStretchType = params?.thumbnailStretchType
 
 			fileRecord = new OmarStageFile( processId: processId,
 					filename: filename,
+					buildThumbnails: buildThumbnails,
 					buildOverviews: buildOverviews,
 					buildHistograms: buildHistograms,
 					buildHistogramsWithR0: buildHistogramsWithR0,
 					useFastHistogramStaging: useFastHistogramStaging,
 					overviewCompressionType: overviewCompressionType,
 					overviewType: overviewType,
+					thumbnailSize: thumbnailSize,
+					thumbnailType: thumbnailType,
+					thumbnailStretchType: thumbnailStretchType,
 					status: ProcessStatus.READY,
 					statusMessage: "Ready to stage file: ${filename}"
 			)

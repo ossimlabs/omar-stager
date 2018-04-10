@@ -14,6 +14,7 @@ class BeService {
 
 	def getBeInfo( be ) {
 		def url = new URL( "${ grailsApplication.config.beInfoUrl }&BE=${ be }" )
+		println "Looking for BE info: ${ url }"
 		def text = url.getText()
 		def json = new JsonSlurper().parseText( text )
 
@@ -28,16 +29,15 @@ class BeService {
 		be.category = info.category
 		be.cc = info.cc
 		be.classification = info.classification
-		be.codeWord = info.codeWord
+		be.codeWord = info.codeword
 		be.condition = info.condition
 		be.dateLastChanged = info.dateLastChanged
-		be.domainLv1 = info.domainLv1
 		be.lastUpdated = info.lastUpdated
 		be.location = info.location
 		be.msnPrimary = info.msnPrimary
 		be.name = info.name
 		be.polSubdivision = info.pol_subdiv
-		be.recordStatus = info.recordStatus
+		be.recordStatus = info.record_status
 		be.releaseMark = info.releaseMark
 		be.reviewDate = info.reviewDate
 		be.sk = info.SK
@@ -56,7 +56,7 @@ class BeService {
 	def updateBeTable( beNumber, overwrite ) {
 		def bes = BasicEncyclopedia.findAllByBeLike( "%${ beNumber }%" )
 
-		// if no BEs exists, make a new entry
+		// if no BEs exist, make a new entry
 		if ( bes.size() < 1 ) {
 			def beInfo = getBeInfo( beNumber )
 			beInfo.features.each {

@@ -15,7 +15,6 @@ class BasicEncyclopedia {
     String codeWord
     String condition
     String dateLastChanged
-    String domainLv1
     String lastUpdated
     Point location
     String msnPrimary
@@ -39,7 +38,6 @@ class BasicEncyclopedia {
         codeWord nullable: true
         condition nullable: true
         dateLastChanged nullable: true
-        domainLv1 nullable: true
         lastUpdated nullable: true
         msnPrimary nullable: true
         name nullable: true

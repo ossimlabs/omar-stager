@@ -18,7 +18,7 @@ appender('JSON', ConsoleAppender) {
     }
 }
 
-root(ERROR, ['STDOUT'])
+root(INFO, ['STDOUT'])
 logger("omar.stager.StagerService", INFO, ['JSON'], false)
 logger("omar.raster.RasterDataSetService", INFO, ['JSON'], false)
 

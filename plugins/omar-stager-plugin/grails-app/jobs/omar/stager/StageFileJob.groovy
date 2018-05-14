@@ -13,7 +13,8 @@ class StageFileJob {
       def fileRecord
       while(fileRecord = stagerService.nextFileToStage())
       {
-         try
+       println "STAGING"
+        try
          {
 //            def result = stagerService.stageFileJni([filename:fileRecord.filename,
 //                                                     buildOverviews: fileRecord.buildOverviews,

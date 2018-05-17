@@ -23,6 +23,7 @@ class StageFileJob {
 //                                                     overviewCompressionType: fileRecord.overviewCompressionType,
 //                                                     overviewType: fileRecord.overviewType
 //            ]
+	    log.info "${ new Date() }"
             log.info "Staging File: ${fileRecord.filename}"
             def result =  stagerService.stageFileJni(fileRecord as HashMap)
 

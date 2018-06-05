@@ -9,6 +9,8 @@ import joms.oms.ImageStager
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
 
+import java.sql.Timestamp
+import groovy.time.TimeDuration
 
 @Slf4j
 @Transactional
@@ -19,6 +21,7 @@ class StagerService
 	def grailsApplication
 	def sessionFactory
 
+  def rasterDataSetService
 
 	def ingestService
 	def dataInfoService
@@ -373,5 +376,9 @@ class StagerService
 			result.status = HttpStatus.ERROR
 		}
 		result
+	}
+
+	List<String> updateLastAccessDates(List<String> rasterEntryIds) {
+				return rasterDataSetService.updateAccessDates(rasterEntryIds)
 	}
 }

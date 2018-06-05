@@ -9,6 +9,8 @@ import joms.oms.ImageStager
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
 
+import java.sql.Timestamp
+import groovy.time.TimeDuration
 
 @Slf4j
 @Transactional
@@ -373,5 +375,35 @@ class StagerService
 			result.status = HttpStatus.ERROR
 		}
 		result
+	}
+
+	List<String> updateLastAccessDates(List<String> rasterEntryIds) {
+        List<String> updatedRasters = []
+        rasterEntryIds.forEach {
+					String className = "omar.raster.RasterEntry"
+					Class clazz = grailsApplication.getDomainClass(className).clazz
+            def re = clazz.get(it)
+            if (updateLastAccess(re)) updatedRasters.add(it)
+        }
+        println "DEBUG: Updated rasters = $updatedRasters"
+        return updatedRasters
+	}
+
+	private static boolean updateLastAccess(def re) {
+		if (re.accessDate == null) {
+			re.accessDate = new Timestamp(System.currentTimeMillis())
+            re.save(flush: true)
+            return true
+		}
+
+		long oneDay = new TimeDuration(1, 0, 0, 0, 0).toMilliseconds()
+		long millisecondsSinceAccessed = System.currentTimeMillis() - re.accessDate.getTime()
+
+		if (millisecondsSinceAccessed > oneDay) {
+			re.accessDate = new Timestamp(System.currentTimeMillis())
+            re.save(flush: true)
+            return true
+		}
+        return false
 	}
 }

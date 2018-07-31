@@ -17,7 +17,7 @@ class StageFileJob {
         try
          {
             log.info "Staging File: ${fileRecord.filename}"
-            HashMap params = =fileRecord as HashMap
+            HashMap params = fileRecord as HashMap
             params.failIfNoGeom = true
             def result =  stagerService.stageFileJni(fileRecord as HashMap)
 

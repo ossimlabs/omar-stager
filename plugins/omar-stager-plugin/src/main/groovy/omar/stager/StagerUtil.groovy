@@ -30,7 +30,7 @@ class StagerUtil
       {
 //        imageStager = new ImageStager()
 //
-//        if ( imageStager.open( file.absolutePath ) )
+//        if ( imageStager.open( file.absolutePath, true ) )
 //        {
 //          imageStager.setUseFastHistogramStagingFlag( true )
 //          def generated = imageStager.stageAll()

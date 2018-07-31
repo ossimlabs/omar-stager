@@ -13,18 +13,12 @@ class StageFileJob {
       def fileRecord
       while(fileRecord = stagerService.nextFileToStage())
       {
-       println "STAGING"
+      //  println "STAGING"
         try
          {
-//            def result = stagerService.stageFileJni([filename:fileRecord.filename,
-//                                                     buildOverviews: fileRecord.buildOverviews,
-//                                                     buildHistograms:fileRecord.buildHistograms,
-//                                                     buildHistogramsWithR0:fileRecord.buildHistogramsWithR0,
-//                                                     useFastHistogramStaging:fileRecord.useFastHistogramStaging,
-//                                                     overviewCompressionType: fileRecord.overviewCompressionType,
-//                                                     overviewType: fileRecord.overviewType
-//            ]
             log.info "Staging File: ${fileRecord.filename}"
+            HashMap params = =fileRecord as HashMap
+            params.failIfNoGeom = true
             def result =  stagerService.stageFileJni(fileRecord as HashMap)
 
             if(result.status>=300)

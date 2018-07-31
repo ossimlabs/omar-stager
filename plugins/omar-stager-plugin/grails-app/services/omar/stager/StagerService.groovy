@@ -54,6 +54,7 @@ class StagerService
 		def results = [status: HttpStatus.OK, message: ""]
 		ImageStager imageStager = new ImageStager()
 		String filename = params.filename
+		final Boolean FAIL_IF_NO_GEOM = params.failIfNoGeom?true:false
 
 		def requestType = "GET"
 		def requestMethod = "stageFileJni"
@@ -66,7 +67,7 @@ class StagerService
 		{
 			ingestdate = new Date()
 
-			if ( imageStager.open( params.filename ) )
+			if ( imageStager.open( params.filename, FAIL_IF_NO_GEOM ) )
 			{
 				URI uri = new URI( params.filename )
 

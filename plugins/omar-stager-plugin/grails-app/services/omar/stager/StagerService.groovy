@@ -85,29 +85,35 @@ class StagerService
 				Integer nEntries = imageStager.getNumberOfEntries()
 				( 0..<nEntries ).each
 						{
-							imageStager.setEntry( it )
-							imageStager.setDefaults()
-							imageStager.setThumbnailStagingFlag( params.buildThumbnails, params.thumbnailSize )
-							imageStager.setHistogramStagingFlag( params.buildHistograms )
-							imageStager.setOverviewStagingFlag( params.buildOverviews )
-							imageStager.setCompressionType( params.overviewCompressionType )
-							imageStager.setOverviewType( params.overviewType )
-							imageStager.setThumbnailType( params.thumbnailType )
-							imageStager.setThumbnailStretchType( params.thumbnailStretchType )
-							imageStager.setUseFastHistogramStagingFlag( params.useFastHistogramStaging )
-							imageStager.setQuietFlag( true )
-
-							if ( params.buildHistograms && params.buildOverviews
-									&& imageStager.hasOverviews() && params.buildHistogramsWithR0 )
+							if(imageStager.setEntry( it ))
 							{
+								imageStager.setDefaults()
+								if(imageStager.hasProjection())
+								{
+									imageStager.setThumbnailStagingFlag( params.buildThumbnails, params.thumbnailSize )
+									imageStager.setHistogramStagingFlag( params.buildHistograms )
+									imageStager.setOverviewStagingFlag( params.buildOverviews )
+									imageStager.setCompressionType( params.overviewCompressionType )
+									imageStager.setOverviewType( params.overviewType )
+									imageStager.setThumbnailType( params.thumbnailType )
+									imageStager.setThumbnailStretchType( params.thumbnailStretchType )
+									imageStager.setUseFastHistogramStagingFlag( params.useFastHistogramStaging )
+									imageStager.setQuietFlag( true )
 
-								imageStager.setHistogramStagingFlag( false )
-								imageStager.stage()
+									if ( params.buildHistograms && params.buildOverviews
+											&& imageStager.hasOverviews() && params.buildHistogramsWithR0 )
+									{
 
-								imageStager.setHistogramStagingFlag( true )
-								imageStager.setOverviewStagingFlag( false )
+										imageStager.setHistogramStagingFlag( false )
+										imageStager.stage()
+
+										imageStager.setHistogramStagingFlag( true )
+										imageStager.setOverviewStagingFlag( false )
+									}
+									imageStager.stage()
+
+								}
 							}
-							imageStager.stage()
 						}
 				//imageStager.stageAll()
 				imageStager.delete()

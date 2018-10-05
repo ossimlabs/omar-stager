@@ -29,6 +29,39 @@ export NSS_WRAPPER_GROUP=/etc/group
 if [ -z "${JAVA_OPTS}" ] ; then
    JAVA_OPTS="-server -Xms256m -Xmx1024m -Djava.awt.headless=true -XX:+CMSClassUnloadingEnabled -XX:+UseGCOverheadLimit -Djava.security.egd=file:/dev/./urandom"
 fi
+
+if [ "${KEY_STORE}" != "" ] ; then
+   if [ "${JAVA_ARGS}" == "" ] ; then
+      export JAVA_ARGS="-Djavax.net.ssl.keyStore=${KEY_STORE}"
+   else
+      export JAVA_ARGS="-Djavax.net.ssl.keyStore=${KEY_STORE} ${JAVA_ARGS}"
+   fi
+fi 
+
+if [ "${KEY_STORE_PASSWORD}" != "" ] ; then
+   if [ "${JAVA_ARGS}" == "" ] ; then
+      export JAVA_ARGS="-Djavax.net.ssl.keyStorePassword=${KEY_STORE_PASSWORD}"
+   else
+      export JAVA_ARGS="-Djavax.net.ssl.keyStorePassword=${KEY_STORE_PASSWORD} ${JAVA_ARGS}"
+   fi
+fi 
+
+if [ "${TRUST_STORE}" != "" ] ; then
+   if [ "${JAVA_ARGS}" == "" ] ; then
+      export JAVA_ARGS="-Djavax.net.ssl.trustStore=${TRUST_STORE}"
+   else
+      export JAVA_ARGS="-Djavax.net.ssl.trustStore=${TRUST_STORE} ${JAVA_ARGS}"
+   fi
+fi 
+
+if [ "${TRUST_STORE_PASSWORD}" != "" ] ; then
+   if [ "${JAVA_ARGS}" == "" ] ; then
+      export JAVA_ARGS="-Djavax.net.ssl.trustStorePassword=${TRUST_STORE_PASSWORD}"
+   else
+      export JAVA_ARGS="-Djavax.net.ssl.trustStorePassword${TRUST_STORE_PASSWORD} ${JAVA_ARGS}"
+   fi
+fi 
+
 if [ -z "${MOUNT_POINT}" ] ; then
   export MOUNT_POINT=/s3
 fi
@@ -54,7 +87,7 @@ if [ ! -z "${BUCKETS}" ] ; then
   done
 fi
 
-export JAR_FILE=`find $HOME -name "*.jar"`
+export JAR_FILE=`find /home/omar -name "*.jar"`
 
 echo "java ${JAVA_OPTS} -jar ${JAR_FILE}"
 java ${JAVA_OPTS} -jar ${JAR_FILE}

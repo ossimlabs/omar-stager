@@ -85,11 +85,23 @@ dependencyManagement {
   applyMavenExclusions false
 }
 
+if ( System.getenv('O2_INLINE_BUILD') ) {
+    grails {
+      plugins {
+        compile project(":omar-raster-plugin")
+        compile project(":omar-video-plugin")
+      }
+    }
+}
+
 dependencies {
-  compile "io.ossim.omar.plugins:omar-stager-plugin:+"
-  compile "io.ossim.omar.plugins:omar-raster-plugin:+"
-  compile "io.ossim.omar.plugins:omar-video-plugin:+"
-  compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:+"
+  if ( ! System.getenv('O2_INLINE_BUILD') ) {
+    compile "io.ossim.omar.plugins:omar-stager-plugin:+"
+    compile "io.ossim.omar.plugins:omar-raster-plugin:+"
+    compile "io.ossim.omar.plugins:omar-video-plugin:+"
+    compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:+"
+  }
+
 
   compile "de.codecentric:spring-boot-admin-starter-client:${springBootAdminStarterClientV}"
 

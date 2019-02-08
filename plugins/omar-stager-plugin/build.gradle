@@ -52,9 +52,20 @@ dependencyManagement {
   applyMavenExclusions false
 }
 
+if ( System.getenv('O2_INLINE_BUILD') ) {
+  grails {
+    plugins {
+      compile project(":omar-oms-plugin")
+      compile project(":omar-hibernate-spatial-plugin")
+    }
+  }
+}
+
 dependencies {
-  compile "io.ossim.omar.plugins:omar-oms-plugin:+"
-  compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:+"
+  if ( ! System.getenv('O2_INLINE_BUILD') ) {
+    compile "io.ossim.omar.plugins:omar-oms-plugin:+"
+    compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:+"  
+  }
 
   compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
   compile "commons-io:commons-io:${commonsIoV}"

@@ -58,12 +58,16 @@ dependencyManagement {
 }
 
 dependencies {
+  compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
   compile "io.ossim.omar.plugins:omar-stager-plugin:${latestGradleIdentifier}"
   compile "io.ossim.omar.plugins:omar-raster-plugin:${latestGradleIdentifier}"
   compile "io.ossim.omar.plugins:omar-video-plugin:${latestGradleIdentifier}"
   compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
 
   compile "de.codecentric:spring-boot-admin-starter-client:${springBootAdminStarterClientV}"
+  
+  compile "io.swagger:swagger-models:1.5.15"
+  compile "org.grails.plugins:actuator-ui:1.1"
 
   compile "org.grails.plugins:quartz-monitor:1.3"
   compile "org.springframework.cloud:spring-cloud-starter-config"
@@ -97,7 +101,7 @@ dependencies {
   runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineGrailsV}"
   testCompile "org.grails:grails-gorm-testing-support"
   testCompile "org.grails.plugins:geb"
-  testCompile "org.grails:grails-web-testing-support:3.2.7"
+  testCompile "org.grails:grails-web-testing-support"
   testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:${seleniumHtmlUnitDriverV}"
   testRuntime "net.sourceforge.htmlunit:htmlunit:${htmlUnitV}"
 }

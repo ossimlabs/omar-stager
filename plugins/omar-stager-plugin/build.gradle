@@ -57,7 +57,7 @@ dependencies {
 
   compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
   compile "commons-io:commons-io:${commonsIoV}"
-  compile "org.grails.plugins:quartz:${quartzV}"
+  compile "org.grails.plugins:quartz:2.0.9"
   compile group: 'org.codehaus.gpars', name: 'gpars', version: '1.2.1'
 
   compile "org.springframework.boot:spring-boot-starter-logging"

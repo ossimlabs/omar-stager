@@ -57,12 +57,24 @@ dependencyManagement {
   applyMavenExclusions false
 }
 
+if ( System.getenv('O2_INLINE_BUILD') ) {
+    grails {
+      plugins {
+        compile project(":omar-raster-plugin")
+        compile project(":omar-video-plugin")
+      }
+    }
+}
+
 dependencies {
-  compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
-  compile "io.ossim.omar.plugins:omar-stager-plugin:${latestGradleIdentifier}"
-  compile "io.ossim.omar.plugins:omar-raster-plugin:${latestGradleIdentifier}"
-  compile "io.ossim.omar.plugins:omar-video-plugin:${latestGradleIdentifier}"
-  compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
+  if ( ! System.getenv('O2_INLINE_BUILD') ) {
+      compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-stager-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-raster-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-video-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
+  }
+
 
   compile "de.codecentric:spring-boot-admin-starter-client:1.5.7"
   compile "org.grails.plugins:quartz:2.0.9"

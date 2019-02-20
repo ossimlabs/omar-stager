@@ -46,10 +46,21 @@ dependencyManagement {
   applyMavenExclusions false
 }
 
+if ( System.getenv('O2_INLINE_BUILD') ) {
+  grails {
+    plugins {
+      compile project(":omar-oms-plugin")
+      compile project(":omar-hibernate-spatial-plugin")
+    }
+  }
+}
+
 dependencies {
-  compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
-  compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
-  compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
+  if ( ! System.getenv('O2_INLINE_BUILD') ) {
+      compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
+  }
 
   compile "io.swagger:swagger-annotations:1.5.15"
   compile "org.ossim:joms:1.9.0-${buildVersionTag}"

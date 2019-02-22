@@ -65,6 +65,8 @@ dependencies {
   compile "io.swagger:swagger-annotations:1.5.15"
   compile "org.ossim:joms:1.9.0-${buildVersionTag}"
   compile 'org.postgresql:postgresql:42.2.1'
+  compile "org.webjars:swagger-ui:3.20.5"
+  compile 'org.grails.plugins:swagger:1.0.0'
 
   compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
   compile "commons-io:commons-io:${commonsIoV}"

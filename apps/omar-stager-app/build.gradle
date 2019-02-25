@@ -72,6 +72,7 @@ dependencies {
       compile "io.ossim.omar.plugins:omar-stager-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-raster-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-video-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
   }
 

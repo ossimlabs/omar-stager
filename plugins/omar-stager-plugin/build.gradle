@@ -67,6 +67,7 @@ dependencies {
   compile 'org.postgresql:postgresql:42.2.1'
   compile "org.webjars:swagger-ui:3.20.5"
   compile 'org.grails.plugins:swagger:1.0.0'
+  compile "org.hibernate:hibernate-spatial:${hibernateSpatialV}"
 
   compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
   compile "commons-io:commons-io:${commonsIoV}"

@@ -57,13 +57,14 @@ dependencyManagement {
   applyMavenExclusions false
 }
 
-if ( System.getenv('O2_INLINE_BUILD') ) {
-    grails {
-      plugins {
-        compile project(":omar-raster-plugin")
-        compile project(":omar-video-plugin")
-      }
+grails {
+  plugins {
+    compile project(":omar-stager-plugin")
+    if ( System.getenv('O2_INLINE_BUILD') ) {
+      compile project(":omar-raster-plugin")
+      compile project(":omar-video-plugin")
     }
+  }
 }
 
 dependencies {

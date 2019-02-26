@@ -6,7 +6,7 @@ buildscript {
   dependencies {
     classpath "org.grails:grails-gradle-plugin:$grailsVersion"
     classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.10"
-    classpath 'io.ossim:gradleDefaults:1.5-SNAPSHOT'
+    classpath 'io.ossim:gradleDefaults:1.6-SNAPSHOT'
   }
 }
 
@@ -58,7 +58,6 @@ if ( System.getenv('O2_INLINE_BUILD') ) {
 dependencies {
   if ( ! System.getenv('O2_INLINE_BUILD') ) {
       compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
-      compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
   }
 

@@ -58,6 +58,7 @@ if ( System.getenv('O2_INLINE_BUILD') ) {
 dependencies {
   if ( ! System.getenv('O2_INLINE_BUILD') ) {
       compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
   }
 

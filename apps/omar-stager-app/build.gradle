@@ -59,7 +59,7 @@ grails {
     compile project(":omar-stager-plugin")
     if ( System.getenv('O2_INLINE_BUILD') ) {
       runtime project(":omar-opir-plugin")
-      runtime project(":omar-video-plugin")
+      runtime project(":omar-raster-plugin")
       runtime project(":omar-video-plugin")
     }
   }
@@ -69,7 +69,6 @@ dependencies {
   if ( ! System.getenv('O2_INLINE_BUILD') ) {
       compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-stager-plugin:${latestGradleIdentifier}"
-      compile "io.ossim.omar.plugins:omar-oms-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
 
       runtime "io.ossim.omar.plugins:omar-opir-plugin:${latestGradleIdentifier}"

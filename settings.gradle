@@ -4,10 +4,9 @@ pluginManagement {
   }
 }
 
-include 'omar-stager-app',
-        'omar-stager-plugin'
+include 'omar-stager-plugin'
 
-project(':omar-stager-app').projectDir = "${rootProject.projectDir}/apps/omar-stager-app" as File
+//project(':omar-stager-app').projectDir = "${rootProject.projectDir}/apps/omar-stager-app" as File
 project(':omar-stager-plugin').projectDir = "${rootProject.projectDir}/plugins/omar-stager-plugin" as File
 
 if ( System.getenv('O2_INLINE_BUILD')) {
@@ -25,4 +24,3 @@ if ( System.getenv('O2_INLINE_BUILD')) {
     project(":${module}-plugin").projectDir = "${rootProject.projectDir}/../${module}/plugins/${module}-plugin" as File
   }
 }
-

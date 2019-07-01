@@ -16,7 +16,8 @@ if ( System.getenv('O2_INLINE_BUILD')) {
       "omar-oms",
       "omar-hibernate-spatial",
       "omar-video",
-      "omar-raster"
+      "omar-raster",
+      "omar-opir"
   ]
 
   modules.each { module ->

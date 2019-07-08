@@ -35,8 +35,8 @@ swagger:
     - HTTP
 
 videoStreaming:
-  videoServerDirRoot: /opt/local/apache2/htdocs/videos
-  videoServerUrlRoot: http://localhost/videos
+  videoServerDirRoot: /data/videos
+  videoServerUrlRoot: ${serverProtocol}://${serverName}/videos
 
 ---
 grails:

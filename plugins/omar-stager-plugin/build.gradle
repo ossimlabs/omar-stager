@@ -14,7 +14,7 @@ dependencies {
       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
   }
 
-//  compile "commons-io:commons-io:${commonsIoV}"
+  compile "commons-io:commons-io:${commonsIoV}"
   compile "org.grails.plugins:quartz:2.0.9"
   compile group: 'org.codehaus.gpars', name: 'gpars', version: '1.2.1'
 }

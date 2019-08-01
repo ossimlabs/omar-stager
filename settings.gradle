@@ -4,16 +4,15 @@ pluginManagement {
   }
 }
 
-include 'omar-stager-app',
-        'omar-stager-plugin'
+include 'omar-stager-app'
 
 project(':omar-stager-app').projectDir = "${rootProject.projectDir}/apps/omar-stager-app" as File
-project(':omar-stager-plugin').projectDir = "${rootProject.projectDir}/plugins/omar-stager-plugin" as File
 
 if ( System.getenv('O2_INLINE_BUILD')) {
   def modules = [
       "omar-core",
       "omar-oms",
+      "omar-stager-core",
       "omar-hibernate-spatial",
       "omar-video",
       "omar-raster",

@@ -2,7 +2,7 @@ package stager.app
  
 import grails.util.Holders
 import omar.core.Repository
-import omar.stager.StagerJob
+import omar.stager.core.StagerJob
 import org.quartz.TriggerKey
 
 import grails.util.Environment

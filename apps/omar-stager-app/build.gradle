@@ -8,8 +8,8 @@ assets {
 
 grails {
   plugins {
-    compile project(":omar-stager-plugin")
     if ( System.getenv('O2_INLINE_BUILD') ) {
+      runtime project(":omar-stager-core-plugin")
       runtime project(":omar-opir-plugin")
       runtime project(":omar-raster-plugin")
       runtime project(":omar-video-plugin")
@@ -20,7 +20,7 @@ grails {
 dependencies {
   if ( ! System.getenv('O2_INLINE_BUILD') ) {
       compile "io.ossim.omar.plugins:omar-core-plugin:${latestGradleIdentifier}"
-      compile "io.ossim.omar.plugins:omar-stager-plugin:${latestGradleIdentifier}"
+      compile "io.ossim.omar.plugins:omar-stager-core-plugin:${latestGradleIdentifier}"
       compile "io.ossim.omar.plugins:omar-hibernate-spatial-plugin:${latestGradleIdentifier}"
 
       runtime "io.ossim.omar.plugins:omar-opir-plugin:${latestGradleIdentifier}"

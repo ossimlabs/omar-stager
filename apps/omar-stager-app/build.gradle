@@ -9,7 +9,9 @@ assets {
 grails {
   plugins {
     if ( System.getenv('O2_INLINE_BUILD') ) {
-      runtime project(":omar-stager-core-plugin")
+      compile project(":omar-core-plugin")
+      compile project(":omar-stager-core-plugin")
+      compile project(":omar-hibernate-spatial-plugin")
       runtime project(":omar-opir-plugin")
       runtime project(":omar-raster-plugin")
       runtime project(":omar-video-plugin")

@@ -1,4 +1,4 @@
-package stager.app 
+package omar.stager.app 
  
 import grails.util.Holders
 import omar.core.Repository
@@ -25,7 +25,7 @@ class BootStrap {
           repo.save()
           StagerJob.triggerNow( baseDir: repo.baseDir )
         }
-        sessionFactory?.currentSession?.flush()
+        // sessionFactory?.currentSession?.flush()
       }
 
        grailsApplication = Holders.grailsApplication

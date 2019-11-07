@@ -38,7 +38,7 @@ node("${BUILD_NODE}"){
         // archiveArtifacts "plugins/*/build/libs/*.jar"
         archiveArtifacts "apps/*/build/libs/*.jar"
     }
-
+/*
     stage ("Publish Nexus")
     {
         withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -52,7 +52,7 @@ node("${BUILD_NODE}"){
             """
         }
     }
-
+*/
     stage ("Publish Docker App")
     {
         withCredentials([[$class: 'UsernamePasswordMultiBinding',

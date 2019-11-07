@@ -35,7 +35,7 @@ node("${BUILD_NODE}"){
         ./gradlew assemble \
             -PossimMavenProxy=${OSSIM_MAVEN_PROXY}
         """
-        archiveArtifacts "plugins/*/build/libs/*.jar"
+        // archiveArtifacts "plugins/*/build/libs/*.jar"
         archiveArtifacts "apps/*/build/libs/*.jar"
     }
 

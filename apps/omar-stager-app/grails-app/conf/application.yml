@@ -104,12 +104,13 @@ dataSource:
     jmxExport: true
     driverClassName: org.postgresql.Driver
     username: postgres
-    password: postgres
+    password: ${omarDb.password}
+    dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
 
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
+            dbCreate: update
             url: jdbc:postgresql:omardb-dev
     test:
         dataSource:
@@ -117,8 +118,8 @@ environments:
             url: jdbc:postgresql:omardb-test
     production:
         dataSource:
-            dbCreate: none
-            url: jdbc:postgresql:omardb-prod
+            dbCreate: update
+            url: ${omarDb.url}
             properties:
                 jmxEnabled: true
                 initialSize: 5
@@ -142,6 +143,11 @@ server:
     servlet:
         context-path: /omar-stager
     contextPath: ${server.servlet.context-path}
+
+swagger:
+    schemes:
+        - HTTPS
+        - HTTP
 
 management:
   endpoints:
@@ -181,16 +187,16 @@ eureka:
     preferIpAddress: true
 
 ---
-environments:
-  production:
-    dataSource:
-      pooled: true
-      jmxExport: true
-      driverClassName: org.postgresql.Driver
-      dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
-      url: jdbc:postgres://localhost:5432/omar_db
-      username: postgres
-      password: password
+# environments:
+#   production:
+#     dataSource:
+#       pooled: true
+#       jmxExport: true
+#       driverClassName: org.postgresql.Driver
+#       dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+#       url: jdbc:postgres://localhost:5432/omar_db
+#       username: postgres
+#       password: password
 
 logging:
   config: classpath:logback.groovy

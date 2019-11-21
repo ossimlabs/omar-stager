@@ -135,6 +135,9 @@ subprojects { project ->
         }
 
         configurations {
+            implementation {
+                exclude group: 'hsqldb', module: 'hsqldb'
+            }
             developmentOnly
             runtimeClasspath {
                 extendsFrom developmentOnly

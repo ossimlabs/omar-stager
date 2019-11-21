@@ -1,27 +1,41 @@
 pluginManagement {
-  repositories {
-    maven { url ossimMavenProxy }
-  }
+	repositories {
+		mavenLocal()
+		maven { url ossimMavenProxy }
+		gradlePluginPortal()
+	}
 }
 
-include 'omar-stager-app'
+rootProject.name='omar-stager'
 
-project(':omar-stager-app').projectDir = "${rootProject.projectDir}/apps/omar-stager-app" as File
+[ 'lib', 'plugin', 'app' ].each { String projectType ->
+	File projectTypeDir = new File( rootDir, "${ projectType }s" )
 
-if ( System.getenv('O2_INLINE_BUILD')) {
-  def modules = [
-      "omar-core",
-      "omar-oms",
-      "omar-stager-core",
-      "omar-hibernate-spatial",
-      "omar-video",
-      "omar-raster",
-      "omar-opir"
-  ]
+	if ( projectTypeDir.exists() )
+	{
+		projectTypeDir.eachDirMatch( { it.endsWith( projectType ) } ) { File subprojectDir ->
+			include subprojectDir.name
 
-  modules.each { module ->
-    include "${module}-plugin"
+			project( ":${ subprojectDir.name }" ).projectDir = subprojectDir
+		}
+	}
+}
 
-    project(":${module}-plugin").projectDir = "${rootProject.projectDir}/../${module}/plugins/${module}-plugin" as File
-  }
+if ( System.getenv( 'O2_INLINE_BUILD' ) )
+{
+	def modules = [ 
+           'omar-core',
+           'omar-hibernate-spatial',
+           'omar-oms',
+           'omar-opir',
+           'omar-raster',
+           'omar-stager-core',
+           'omar-video'
+        ]
+
+	modules.each { module ->
+		include "${ module }-plugin"
+
+		project( ":${ module }-plugin" ).projectDir = "${ rootProject.projectDir }/../${ module }/plugins/${ module }-plugin" as File
+	}
 }

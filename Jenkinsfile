@@ -24,6 +24,12 @@ podTemplate(
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
+    ),
+    containerTemplate(
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/alpine/helm:3.2.3",
+      name: 'helm',
+      command: 'cat',
+      ttyEnabled: true
     )
   ],
   volumes: [
@@ -36,50 +42,71 @@ podTemplate(
 {
   node(POD_LABEL){
 
-      stage("Checkout branch $BRANCH_NAME")
-      {
-          checkout(scm)
-      }
+    stage("Checkout branch $BRANCH_NAME")
+    {
+        checkout(scm)
+    }
 
-      stage("Load Variables")
-      {
-        withCredentials([string(credentialsId: 'o2-artifact-project', variable: 'o2ArtifactProject')]) {
-          step ([$class: "CopyArtifact",
-            projectName: o2ArtifactProject,
-            filter: "common-variables.groovy",
-            flatten: true])
-          }
-          load "common-variables.groovy"
-      }
-      stage('Build') {
-        container('builder') {
-          sh """
-          ./gradlew assemble \
-              -PossimMavenProxy=${MAVEN_DOWNLOAD_URL}
-          ./gradlew copyJarToDockerDir \
-              -PossimMavenProxy=${MAVEN_DOWNLOAD_URL}
-          """
-          archiveArtifacts "apps/*/build/libs/*.jar"
+    stage("Load Variables")
+    {
+      withCredentials([string(credentialsId: 'o2-artifact-project', variable: 'o2ArtifactProject')]) {
+        step ([$class: "CopyArtifact",
+          projectName: o2ArtifactProject,
+          filter: "common-variables.groovy",
+          flatten: true])
         }
+        load "common-variables.groovy"
+    }
+
+    stage('Build') {
+      container('builder') {
+        sh """
+        ./gradlew assemble \
+            -PossimMavenProxy=${MAVEN_DOWNLOAD_URL}
+        ./gradlew copyJarToDockerDir \
+            -PossimMavenProxy=${MAVEN_DOWNLOAD_URL}
+        """
+        archiveArtifacts "apps/*/build/libs/*.jar"
       }
+    }
+    
     stage('Docker build') {
       container('docker') {
         withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {  //TODO
           sh """
-            docker build -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:${BRANCH_NAME} ./docker
+            docker build --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:${BRANCH_NAME} ./docker
           """
-        }
-      }
-      stage('Docker push'){
-        container('docker') {
-          withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
-          sh """
-              docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:${BRANCH_NAME}
-          """
-          }
         }
       }
     }
+
+    stage('Docker push'){
+      container('docker') {
+        withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
+          sh """
+              docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:${BRANCH_NAME}
+          """
+        }
+      }
+    }
+
+    stage('Package chart'){
+      container('helm') {
+        sh """
+            mkdir packaged-chart
+            helm package -d packaged-chart chart
+          """
+      }
+    }
+
+    stage('Upload chart'){
+      container('builder') {
+        withCredentials([usernameColonPassword(credentialsId: 'helmCredentials', variable: 'HELM_CREDENTIALS')]) {
+          sh "curl -u ${HELM_CREDENTIALS} ${HELM_UPLOAD_URL} --upload-file packaged-chart/*.tgz -v"
+        }
+      }
+    }
+
     stage("Clean Workspace"){
       if ("${CLEAN_WORKSPACE}" == "true")
         step([$class: 'WsCleanup'])

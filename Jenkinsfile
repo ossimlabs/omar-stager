@@ -58,6 +58,20 @@ podTemplate(
         load "common-variables.groovy"
     }
 
+    stage('SonarQube Analysis') {
+      nodejs(nodeJSInstallationName: "${NODEJS_VERSION}") {
+        def scannerHome = tool "${SONARQUBE_SCANNER_VERSION}"
+
+        withSonarQubeEnv('sonarqube'){
+          sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.projectKey=omar-stager \
+                    -Dsonar.login=${SONARQUBE_TOKEN}
+                  """
+        }
+      }
+    }
+
     stage('Build') {
       container('builder') {
         sh """

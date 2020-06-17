@@ -11,3 +11,8 @@ out/
 .settings
 .classpath
 prodDb.mv.db
+packaged-chart
+*.lock
+charts/*.tgz
+apps/omar-stager-app/bin/
+docker/*.jar

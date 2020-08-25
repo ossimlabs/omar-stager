@@ -29,7 +29,7 @@ global:
   useSpringConfigServer: false
 
   volumes:
-    ossimData:
+    ossim-data:
       type: null
       nfsServer: null
       nfsMountPoint: null
@@ -37,8 +37,8 @@ global:
         - ReadWriteMany
       size: 1
 
-volumes:
-  ossimData: null
+volumeNames:
+  - ossim-data
 
 # These variables can be overridden because of the use of the 'pluck' function:
 # - createIngress

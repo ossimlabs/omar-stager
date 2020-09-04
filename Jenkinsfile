@@ -130,7 +130,7 @@ podTemplate(
         }
       }
     }
-//
+
     stage('Docker push'){
       container('docker') {
         withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {

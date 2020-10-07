@@ -164,7 +164,7 @@ podTemplate(
             }
             else {
                 sh """
-                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-wms-app:"${VERSION}".a           
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:"${VERSION}".a           
                 """
             }
           }

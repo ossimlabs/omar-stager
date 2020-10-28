@@ -194,7 +194,7 @@ podTemplate(
             credentials: 'Jenkins-AWS-IAM',
             region: 'us-east-1'){
                 if (BRANCH_NAME == 'master'){
-                    //insert future instructions here
+                    //insert future instructions here.
                 }
                 else if (BRANCH_NAME == 'dev') {
                     sh "aws eks --region us-east-1 update-kubeconfig --name gsp-dev-v2 --alias dev"

@@ -139,7 +139,7 @@ podTemplate(
           }
           else {
                 sh """
-                    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:dev --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a ./docker
+                    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:1.4 --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a ./docker
 
                 """
           }

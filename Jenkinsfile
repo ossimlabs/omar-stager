@@ -30,7 +30,14 @@ podTemplate(
       name: 'helm',
       command: 'cat',
       ttyEnabled: true
-    )
+    ),
+    containerTemplate(
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/kubectl-aws-helm:latest",
+      name: 'kubectl-aws-helm',
+      command: 'cat',
+      ttyEnabled: true,
+      alwaysPullImage: true
+    ),
   ],
   volumes: [
     hostPathVolume(
@@ -121,25 +128,48 @@ podTemplate(
       }
     }
     
-    stage('Docker build') {
+	    stage('Docker build') {
       container('docker') {
         withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {  //TODO
-          sh """
-            docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:dev --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:"${VERSION}" ./docker
-          """
-        }
-      }
-    }
+          if (BRANCH_NAME == 'master'){
+                sh """
+                    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:dev --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}" ./docker
 
-    stage('Docker push'){
-      container('docker') {
-        withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
-          sh """
-              docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager-app:"${VERSION}"
-          """
+                """
+          }
+          else {
+                sh """
+                    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:1.4 --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a ./docker
+
+                """
+          }
         }
       }
     }
+	
+	    stage('Docker push'){
+        container('docker') {
+          withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
+            if (BRANCH_NAME == 'master'){
+                sh """
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}"
+                """
+            }
+            else if (BRANCH_NAME == 'dev') {
+                sh """
+                    docker tag "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:dev
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:dev
+                """
+            }
+            else {
+                sh """
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a           
+                """
+            }
+          }
+        }
+      }
 
     stage('Package chart'){
       container('helm') {
@@ -157,6 +187,26 @@ podTemplate(
         }
       }
     }
+      
+    stage('New Deploy'){
+        container('kubectl-aws-helm') {
+            withAWS(
+		credentials: 'Jenkins-AWS-IAM',
+                region: 'us-east-1'){
+                if (BRANCH_NAME == 'master'){
+                    //insert future instructions here.
+                }
+                else if (BRANCH_NAME == 'dev') {
+                    sh "aws eks --region us-east-1 update-kubeconfig --name gsp-dev-v2 --alias dev"
+                    sh "kubectl config set-context dev --namespace=omar-dev"
+                    sh "kubectl rollout restart deployment/omar-stager"   
+                }
+                else {
+                    sh "echo Not deploying ${BRANCH_NAME} branch"
+                }
+            }
+        }
+    }  
 
     stage("Clean Workspace"){
       if ("${CLEAN_WORKSPACE}" == "true")

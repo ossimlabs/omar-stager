@@ -20,7 +20,7 @@ class BootStrap {
           // '/data1', 
           // '/data/uav'
         ].each {
-          println it
+          log.info it
           def repo = Repository.findOrCreateByBaseDir( it )
           repo.save()
           StagerJob.triggerNow( baseDir: repo.baseDir )
@@ -44,8 +44,6 @@ class BootStrap {
           {
              trigger.repeatInterval = 5000l
             // trigger.repeatInterval = StagerUtils.sqsConfig.reader.pollingIntervalSeconds*1000 as Long
-
-             Date nextFireTime=quartzScheduler.rescheduleJob(triggerKey, trigger)
           }
        //}
 

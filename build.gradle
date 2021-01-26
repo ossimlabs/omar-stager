@@ -27,7 +27,7 @@ subprojects { project ->
      buildVersionTag = gitBranch == "master" ? "RELEASE" : "SNAPSHOT"
     }
 
-    project.version "${buildVersion}-${buildVersionTag}"
+    project.version "${project.buildVersion}-${buildVersionTag}"
     project.group groupName
 
     apply plugin:"eclipse"
@@ -61,7 +61,7 @@ subprojects { project ->
 
             ext {
                 jarDestination = "${project.projectDir}/build/libs/${project.name}-${version}.jar"
-                mavenPublishUrl = getConfigurationProperty( 'MAVEN_PUBLISH_URL', 'mavenPublishUrl' )
+                mavenPublishUrl = getConfigurationProperty( 'MAVEN_UPLOAD_URL', 'mavenPublishUrl' )
                 mavenRepoUsername = getConfigurationProperty( 'MAVEN_REPO_USERNAME', 'mavenRepoUsername')
                 mavenRepoPassword = getConfigurationProperty( 'MAVEN_REPO_PASSWORD', 'mavenRepoPassword')
             }

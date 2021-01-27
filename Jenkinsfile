@@ -55,13 +55,7 @@ podTemplate(
         
         GIT_BRANCH_NAME = scmVars.GIT_BRANCH
         BRANCH_NAME = """${sh(returnStdout: true, script: "echo ${GIT_BRANCH_NAME} | awk -F'/' '{print \$2}'").trim()}"""
-        sh """
-        touch buildVersion.txt
-        grep buildVersion gradle.properties | cut -d "=" -f2 > "buildVersion.txt"
-        """
-        preVERSION = readFile "buildVersion.txt"
-        VERSION = preVERSION.substring(0, preVERSION.indexOf('\n'))
-
+        VERSION = """${sh(returnStdout: true, script: "cat chart/Chart.yaml | grep version: | awk -F'version:' '{print \$2}'").trim()}"""
         GIT_TAG_NAME = "omar-stager" + "-" + VERSION
         ARTIFACT_NAME = "ArtifactName"
 

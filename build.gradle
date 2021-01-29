@@ -1,7 +1,3 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
-import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
-
 buildscript {
     repositories {
         maven { url ossimMavenProxy }
@@ -12,15 +8,13 @@ buildscript {
         classpath "org.grails.plugins:hibernate5:${hibernate5PluginVersion}"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:${webdriverGradlePluginVersion}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
-		classpath "io.ossim:gradleDefaults:${ gradleDefaultsVersion }"
-		classpath "com.bmuschko:gradle-docker-plugin:${gradleDockerPluginVersion}"
     }
 }
 
 plugins {
-	id 'groovy'
-    id "com.github.ben-manes.versions" version "0.27.0"
-    id "org.sonarqube" version "2.8"
+    id 'groovy'
+    id "com.github.ben-manes.versions" version "0.36.0"
+    id "org.sonarqube" version "3.1"
 }
 
 subprojects { project ->
@@ -28,9 +22,12 @@ subprojects { project ->
 	boolean isGrailsPlugin = project.name.endsWith( '-plugin' )
 	boolean isGrailsProject = isGrailsApp || isGrailsPlugin
 
-    io.ossim.gradleDefaults.Variables.setAdditionalVariables(project)
-    io.ossim.gradleDefaults.Variables.setVersionVariables(project)
-    project.version "${buildVersion}-${buildVersionTag}"
+   project.ext {
+     gitBranch = getCurrentGitBranch(project)
+     buildVersionTag = gitBranch == "master" ? "RELEASE" : "SNAPSHOT"
+    }
+
+    project.version "${project.buildVersion}-${buildVersionTag}"
     project.group groupName
 
     apply plugin:"eclipse"
@@ -40,40 +37,9 @@ subprojects { project ->
     {
         if ( isGrailsApp )
         {
-            apply plugin: 'com.bmuschko.docker-remote-api'
-
             ext {
                 dockerBuildDir = "${ rootProject.projectDir }/docker"
                 jarDestination = "${ project.projectDir }/build/libs/${ project.name }-${ version }.jar"
-                
-                dockerImageName = project.name
-                dockerBuildTag = project.dockerImageTag
-                buildArguments = [ "BASE_IMAGE": "${ dockerRegistryUrl }/${ dockerBaseImage }:${ dockerFromTag }" ]
-                
-                openshiftUrl = getConfigurationProperty( 'OPENSHIFT_URL', 'openshiftUrl' )
-                openshiftUsername = getConfigurationProperty( 'OPENSHIFT_USERNAME', 'openshiftUsername' )
-                openshiftPassword = getConfigurationProperty( 'OPENSHIFT_PASSWORD', 'openshiftPassword' )                
-                openshiftProjectName =  getConfigurationProperty( 'OPENSHIFT_PROJECT_NAME', 'openshiftProjectName' )
-            }
-
-            io.ossim.gradleDefaults.Openshift.addOpenshiftTasks(
-                project, 
-                openshiftUrl, 
-                openshiftUsername, 
-                openshiftPassword, 
-                openshiftProjectName, 
-                openshiftServiceName,  
-                dockerRegistryUrl, 
-                dockerImageName, 
-                dockerImageTag
-            )
-
-            docker {
-                registryCredentials {
-                    url = dockerRegistryUrl
-                    username = getConfigurationProperty( 'DOCKER_REGISTRY_USERNAME', 'dockerRegistryUsername' )
-                    password = getConfigurationProperty( 'DOCKER_REGISTRY_PASSWORD', 'dockerRegistryPassword' )
-                }
             }
 
             // Copy the built jar to the docker directory
@@ -83,30 +49,6 @@ subprojects { project ->
                 }
                 from jarDestination
                 into dockerBuildDir
-            }
-
-
-            task buildDockerImage( type: DockerBuildImage, dependsOn: copyJarToDockerDir ) {
-                inputDir = project.file( dockerBuildDir )
-                tags.add( "${ dockerImageName }:${ dockerBuildTag }" )
-                buildArgs = buildArguments
-                doFirst {
-                    if ( buildArguments )
-                    {
-                        println( "Using ${ buildArguments } as build args" )
-                    }
-                }
-            }
-
-            task tagDockerImage( type: DockerTagImage, dependsOn: buildDockerImage ) {
-                imageId = "${ dockerImageName }:${ dockerBuildTag }"
-                tag = dockerBuildTag
-                repository = "${ dockerRegistryUrl }/${ dockerImageName }"
-            }
-
-            task pushDockerImage( type: DockerPushImage, dependsOn: 'tagDockerImage' ) {
-                imageName = "${ dockerRegistryUrl }/${ dockerImageName }"
-                tag = dockerBuildTag
             }
 
             apply plugin:"org.grails.grails-web"
@@ -119,10 +61,35 @@ subprojects { project ->
 
             ext {
                 jarDestination = "${project.projectDir}/build/libs/${project.name}-${version}.jar"
+                mavenPublishUrl = getConfigurationProperty( 'MAVEN_UPLOAD_URL', 'mavenPublishUrl' )
+                mavenRepoUsername = getConfigurationProperty( 'MAVEN_REPO_USERNAME', 'mavenRepoUsername')
+                mavenRepoPassword = getConfigurationProperty( 'MAVEN_REPO_PASSWORD', 'mavenRepoPassword')
             }
 
-            io.ossim.gradleDefaults.Publications.addPublication(project, groupName, name, "${buildVersion}-${buildVersionTag}")
-            io.ossim.gradleDefaults.Publications.addRepository(project, mavenPublishUrl, mavenRepoUsername, mavenRepoPassword)                    
+            project.with {
+              publishing {
+                    publications {
+                        "${project.name}" (MavenPublication) {
+                            group groupName
+                            groupId = groupName
+                            version project.version
+                            from components.java
+                        }
+                    }
+                    repositories {
+                    maven {
+                        credentials {
+                            username mavenRepoUsername
+                            password mavenRepoPassword
+                            }
+                            url = mavenPublishUrl.toLowerCase()
+                        }
+                    }                
+                    jar.onlyIf {
+                        !file(jarDestination).exists()
+                    }
+                }
+            }
         }
 
         apply plugin:"asset-pipeline"
@@ -266,4 +233,19 @@ subprojects { project ->
 String getConfigurationProperty( String envVar, String sysProp )
 {
 	System.getenv( envVar ) ?: project.findProperty( sysProp )
+}
+
+String getCurrentGitBranch(Project project) {
+    def gitBranch = "Unknown branch"
+    try {
+        def workingDir = new File("${project.projectDir}")
+        def result = 'git rev-parse --abbrev-ref HEAD'.execute(null, workingDir)
+        result.waitFor()
+        if (result.exitValue() == 0) {
+            gitBranch = result.text.trim()
+        }
+    } catch (e) {
+        e.printStackTrace()
+    }
+    return gitBranch
 }

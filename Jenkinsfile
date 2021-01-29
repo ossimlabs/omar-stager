@@ -20,7 +20,7 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/omar-builder:latest",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/omar-builder:jdk11",
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
@@ -55,13 +55,7 @@ podTemplate(
         
         GIT_BRANCH_NAME = scmVars.GIT_BRANCH
         BRANCH_NAME = """${sh(returnStdout: true, script: "echo ${GIT_BRANCH_NAME} | awk -F'/' '{print \$2}'").trim()}"""
-        sh """
-        touch buildVersion.txt
-        grep buildVersion gradle.properties | cut -d "=" -f2 > "buildVersion.txt"
-        """
-        preVERSION = readFile "buildVersion.txt"
-        VERSION = preVERSION.substring(0, preVERSION.indexOf('\n'))
-
+        VERSION = """${sh(returnStdout: true, script: "cat chart/Chart.yaml | grep version: | awk -F'version:' '{print \$2}'").trim()}"""
         GIT_TAG_NAME = "omar-stager" + "-" + VERSION
         ARTIFACT_NAME = "ArtifactName"
 
@@ -134,12 +128,12 @@ podTemplate(
 
 		if (BRANCH_NAME == 'master'){
 			sh """
-			    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:1.9 --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}" ./docker
+			    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-jdk11-runtime:1.2 --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}" ./docker
 			"""
 		}
 		else {
 			sh """
-			    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-runtime:1.9 --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a ./docker
+			    docker build --build-arg BASE_IMAGE=${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-alpine-jdk11-runtime:1.2 --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-stager:"${VERSION}".a ./docker
 			"""
 		}	
         }

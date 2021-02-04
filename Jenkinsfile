@@ -1,4 +1,3 @@
-
 properties([
     parameters([
         string(name: 'PROJECT_URL', defaultValue: 'https://github.com/ossimlabs/omar-stager', description: 'The project github URL'),

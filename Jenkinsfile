@@ -172,8 +172,10 @@ node(POD_LABEL){
                 helm package -d packaged-chart chart
             """
         withCredentials([usernameColonPassword(credentialsId: 'helmCredentials', variable: 'HELM_CREDENTIALS')]) {
-            sh "apk add curl"
-            sh "curl -u ${HELM_CREDENTIALS} ${HELM_UPLOAD_URL} --upload-file packaged-chart/*.tgz -v"
+            sh """
+                apk add curl
+                curl -u ${HELM_CREDENTIALS} ${HELM_UPLOAD_URL} --upload-file packaged-chart/*.tgz -v
+            """
             }
         }
     }

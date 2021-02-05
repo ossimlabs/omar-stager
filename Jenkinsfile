@@ -1,7 +1,6 @@
 properties([
     parameters([
         string(name: 'PROJECT_URL', defaultValue: 'https://github.com/ossimlabs/omar-stager', description: 'The project github URL'),
-        string(name: 'BUILD_NODE', defaultValue: 'POD_LABEL', description: 'The build node to run on'),
         string(name: 'DOCKER_REGISTRY_DOWNLOAD_URL', defaultValue: 'nexus-docker-private-group.ossim.io', description: 'Repository of docker images')
     ]),
     pipelineTriggers([
@@ -74,8 +73,8 @@ node(POD_LABEL){
         ARTIFACT_NAME = "ArtifactName"
 
             if (BRANCH_NAME == "${MASTER}") {
-                buildName "${CHART_APP_VERSION}"
-                TAG_NAME = "${CHART_APP_VERSION}"
+                buildName "${VERSION}"
+                TAG_NAME = "${VERSION}"
             }
             else {
                 buildName "${BRANCH_NAME}-${currentDate}"

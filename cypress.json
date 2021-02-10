@@ -1,5 +1,5 @@
 {
-    "baseUrl": "https://omar.ossim.io/omar-stager",
+    "baseUrl": "https://omar-dev.ossim.io/",
     "reporter": "junit",
     "video": false,
     "reporterOptions": {

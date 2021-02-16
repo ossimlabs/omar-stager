@@ -1,0 +1,9 @@
+{
+  "baseUrl": "https://omar-dev.ossim.io/omar-stager",
+  "reporter": "junit",
+  "video": false,
+  "reporterOptions": {
+    "mochaFile": "results/test-results.xml",
+    "toConsole": false
+  }
+}

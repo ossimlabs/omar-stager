@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.3660" tests="8" failures="3">
+  <testsuite name="Root Suite" timestamp="2021-02-17T13:27:47" tests="0" file="cypress/integration/APITestingOLD.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Automated tests for the omar-superoverlay API endpoints" timestamp="2021-02-17T13:27:48" tests="8" time="0.3660" failures="3">
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test minKmlQuery" time="0.0000" classname="Should test minKmlQuery">
+      <failure message="expected 404 to equal 200" type="AssertionError"><![CDATA[AssertionError: expected 404 to equal 200
+    at Context.eval (https://omar-dev.ossim.io/__cypress/tests?p=cypress/integration/APITestingOLD.js:135:38)]]></failure>
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test the header of minKmlQuery" time="0.0780" classname="Should test the header of minKmlQuery">
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test maxKmlQuery" time="0.0000" classname="Should test maxKmlQuery">
+      <failure message="expected 404 to equal 200" type="AssertionError"><![CDATA[AssertionError: expected 404 to equal 200
+    at Context.eval (https://omar-dev.ossim.io/__cypress/tests?p=cypress/integration/APITestingOLD.js:135:38)]]></failure>
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test the header of maxKmlQuery" time="0.0740" classname="Should test the header of maxKmlQuery">
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test badKmlQuery" time="0.0720" classname="Should test badKmlQuery">
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test the header of badKmlQuery" time="0.0630" classname="Should test the header of badKmlQuery">
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test createKml" time="0.0000" classname="Should test createKml">
+      <failure message="expected 404 to equal 200" type="AssertionError"><![CDATA[AssertionError: expected 404 to equal 200
+    at Context.eval (https://omar-dev.ossim.io/__cypress/tests?p=cypress/integration/APITestingOLD.js:135:38)]]></failure>
+    </testcase>
+    <testcase name="Automated tests for the omar-superoverlay API endpoints Should test the header of createKml" time="0.0790" classname="Should test the header of createKml">
+    </testcase>
+  </testsuite>
+</testsuites>

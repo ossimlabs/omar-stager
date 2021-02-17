@@ -1,8 +1,11 @@
 
 // Declare the variables
-let allImages;
+let fullCollection;
 
 // Get the json here, store in variable
+
+
+
 
 // McKenzie - We got our collection ;)
 describe('yet another test', () => {
@@ -12,11 +15,14 @@ describe('yet another test', () => {
             method: 'Get',
             url: `https://omar-dev.ossim.io/omar-wfs/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=omar:raster_entry&filter=&outputFormat=JSON&sortBy=mission_id+D&startIndex=0`,
         }).then((response) => {
-            console.log('response', response)
-            console.log('responseBody', response.body)
+           // console.log('response', response)
+           // console.log('responseBody', response.body)
+            fullCollection = response.body;
+            for(let i=0; i<= fullCollection.features.length; i++){
+               console.log(fullCollection[i]);
+            }
             // expect(response).property('status').to.equal(200)
             // expect(response.body).property('id').to.not.be.oneOf([null, ""])
-            const body = (response.body)
 
         })
     })

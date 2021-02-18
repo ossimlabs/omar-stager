@@ -37,24 +37,23 @@ describe('yet another test', () => {
         })
     })
 
-// Do not run until image deletion is figured out
-    // it('Remove images', ()=> {
-    //     // allMissionIds.forEach((id) => {
-    //         cy.request({method: "POST",
-    //             url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ fullCollection[0].properties.filename,
-    //             auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'}
-    //         })
-    //             .then((response) => {
-    //                 let temp
-    //
-    //             })
-    //     // })
-    // })
+//     it('Remove images', ()=> {
+//         // allMissionIds.forEach((id) => {
+//             cy.request({method: "POST",
+//                 url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ fullCollection[0].properties.filename,
+//                 auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'}
+//             })
+//                 .then((response) => {
+//                     let temp
+//
+//                 })
+//         // })
+//     })
 
     it('Add images back', ()=> {
         // allMissionIds.forEach((id) => {
         cy.request({method: "POST",
-            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename=/data/s3/2016/04/04/02/nitf/04APR16CS0207001_110646_SM0262R_29N081W_001X___SHH_0101_OBS_IMAG.nitf&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
+            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename="+fullCollection[0].properties.filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
             auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'}
         })
             .then((response) => {
@@ -63,26 +62,6 @@ describe('yet another test', () => {
             })
         // })
     })
-
-    //
-    // it('here we go again', () => {
-    //    // const url = https://omar-dev.ossim.io/omar-wfs/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=omar:raster_entry&filter=&outputFormat=JSON&sortBy=mission_id+D&startIndex=0;
-    //     cy.request({
-    //         method: 'Get',
-    //         url: `https://omar-dev.ossim.io/omar-wfs/wfs?maxFeatures=3&filter=mission_id%20IS%20LIKE%20COSMO-SkyMed&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date+D&startIndex=0&typeName=omar:raster_entry&version=1.1.0`,
-    //     }).then((response) => {
-    //        // console.log('response', response)
-    //        // console.log('responseBody', response.body)
-    //         fullCollection = response.body;
-    //         console.log(fullCollection.length)
-    //         for(let i=0; i<= fullCollection.features.length; i++){
-    //            console.log(fullCollection[i]);
-    //         }
-    //         // expect(response).property('status').to.equal(200)
-    //         // expect(response.body).property('id').to.not.be.oneOf([null, ""])
-    //
-    //     })
-    // })
 })
 
 // iterate through and grab the ones with mission id and filename

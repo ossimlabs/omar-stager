@@ -37,30 +37,33 @@ describe('yet another test', () => {
         })
     })
 
-//     it('Remove images', ()=> {
-//         // allMissionIds.forEach((id) => {
-//             cy.request({method: "POST",
-//                 url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ fullCollection[0].properties.filename,
-//                 auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'}
-//             })
-//                 .then((response) => {
-//                     let temp
-//
-//                 })
-//         // })
-//     })
+    it('Remove images', ()=> {
+        fullCollection.forEach((image) => {
+            console.log(image.properties.filename)
+            cy.request({method: "POST",
+                url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ image.properties.filename,
+                auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
+                failOnStatusCode: false
+            })
+                .then((response) => {
+                    let temp
+
+                })
+        })
+    })
 
     it('Add images back', ()=> {
-        // allMissionIds.forEach((id) => {
+        fullCollection.forEach((image) => {
         cy.request({method: "POST",
-            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename="+fullCollection[0].properties.filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
-            auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'}
+            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename="+image.properties.filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
+            auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
+            failOnStatusCode: false
         })
             .then((response) => {
                 let temp
 
             })
-        // })
+        })
     })
 })
 

@@ -7,7 +7,7 @@ describe('Tests for omar-stager', () => {
     it('Grab all mission ids', () => {
         cy.request({
             method: "GET",
-            url: "https://omar-dev.ossim.io/omar-stager/dataManager/getDistinctValues?property=missionId"
+            url: "/omar-stager/dataManager/getDistinctValues?property=missionId"
         }).then((response) =>{
             console.log('all mission ids: ', response.body)
             allMissionIds = response.body;
@@ -16,7 +16,7 @@ describe('Tests for omar-stager', () => {
 
     it('Loop through and grab 3 of each mission id', ()=> {
         allMissionIds.forEach((id) => {
-            cy.request({method: "GET", url: "https://omar-dev.ossim.io/omar-wfs/wfs?maxFeatures=3&filter=mission_id%20LIKE%20%27%25"+id+"%25%27&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date%2BD&startIndex=0&typeName=omar%3Araster_entry&version=1.1.0"})
+            cy.request({method: "GET", url: "/omar-wfs/wfs?maxFeatures=3&filter=mission_id%20LIKE%20%27%25"+id+"%25%27&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date%2BD&startIndex=0&typeName=omar%3Araster_entry&version=1.1.0"})
                 .then((response) => {
                     let temp
                     console.log(response.body)
@@ -35,18 +35,16 @@ describe('Tests for omar-stager', () => {
                 let filename = image.properties.filename
                     console.log(filename)
                     cy.request({method: "POST",
-                        url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ filename,
-                        auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
+                        url: "/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ filename,
                         failOnStatusCode: false
                     }).then((response) => {
                         cy.request({method: "POST",
-                            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename="+filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
-                            auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
+                            url: "/omar-stager/dataManager/addRaster?filename="+filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
                             failOnStatusCode: false
                         }).then((response) => {
                             cy.wait(20000)
                             cy.request({method: "GET",
-                                url: "https://omar-dev.ossim.io/omar-wfs/wfs?filter=filename%20LIKE%20%27%25"+filename+"%25%27&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date%2BD&startIndex=0&typeName=omar%3Araster_entry&version=1.1.0",
+                                url: "/omar-wfs/wfs?filter=filename%20LIKE%20%27%25"+filename+"%25%27&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date%2BD&startIndex=0&typeName=omar%3Araster_entry&version=1.1.0",
                                 failOnStatusCode: false
                             }).then((response) => {
                                 expect(response.body.totalFeatures).to.be.gte(1)

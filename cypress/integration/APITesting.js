@@ -1,27 +1,20 @@
-
 // Declare the variables
-let fullCollection;
+let fullCollection = [];
 let allMissionIds;
-// Get the json here, store in variable
 
-
-
-
-// McKenzie - We got our collection ;)
-describe('yet another test', () => {
+describe('Tests for omar-stager', () => {
 
     it('Grab all mission ids', () => {
         cy.request({
             method: "GET",
-            url: `https://omar-dev.ossim.io/omar-stager/dataManager/getDistinctValues?property=missionId`
+            url: "https://omar-dev.ossim.io/omar-stager/dataManager/getDistinctValues?property=missionId"
         }).then((response) =>{
             console.log('all mission ids: ', response.body)
             allMissionIds = response.body;
         })
     })
 
-    it('Loop through and grab 3 of each mission ids', ()=> {
-        fullCollection = [];
+    it('Loop through and grab 3 of each mission id', ()=> {
         allMissionIds.forEach((id) => {
             cy.request({method: "GET", url: "https://omar-dev.ossim.io/omar-wfs/wfs?maxFeatures=3&filter=mission_id%20LIKE%20%27%25"+id+"%25%27&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date%2BD&startIndex=0&typeName=omar%3Araster_entry&version=1.1.0"})
                 .then((response) => {
@@ -30,44 +23,44 @@ describe('yet another test', () => {
                     for(var i = 0; i < response.body.totalFeatures; i++) {
                         temp = response.body.features[i].properties['mission_id']
                         fullCollection.push(response.body.features[i])
-                        console.log('full collection', fullCollection)
                         expect(temp).to.eq(id)
                     }
+                    console.log('full collection', fullCollection)
                 })
         })
     })
 
-    it('Remove images', ()=> {
+    it('Remove, Add, & Check everything', () => {
         fullCollection.forEach((image) => {
-            console.log(image.properties.filename)
-            cy.request({method: "POST",
-                url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ image.properties.filename,
-                auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
-                failOnStatusCode: false
-            })
-                .then((response) => {
-                    let temp
-
+                let filename = image.properties.filename
+                    console.log(filename)
+                    cy.request({method: "POST",
+                        url: "https://omar-dev.ossim.io/omar-stager/dataManager/removeRaster?deleteFiles=false&deleteSupportFiles=true&filename="+ filename,
+                        auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
+                        failOnStatusCode: false
+                    }).then((response) => {
+                        cy.request({method: "POST",
+                            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename="+filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
+                            auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
+                            failOnStatusCode: false
+                        }).then((response) => {
+                            cy.wait(20000)
+                            cy.request({method: "GET",
+                                url: "https://omar-dev.ossim.io/omar-wfs/wfs?filter=filename%20LIKE%20%27%25"+filename+"%25%27&outputFormat=JSON&request=GetFeature&service=WFS&sortBy=acquisition_date%2BD&startIndex=0&typeName=omar%3Araster_entry&version=1.1.0",
+                                failOnStatusCode: false
+                            }).then((response) => {
+                                expect(response.body.totalFeatures).to.be.gte(1)
+                                let actual = response.body.features[0].properties
+                                let expected = image.properties
+                                let keys = Object.keys(expected)
+                                let forDeletion = ["id", "ingest_date", "raster_data_set_id", "receive_date"]
+                                keys = keys.filter(item => !forDeletion.includes(item))
+                                keys.forEach((key) => {
+                                    expect(actual[key]).to.eq(expected[key])
+                                })
+                            })
+                        })
+                    })
                 })
         })
-    })
-
-    it('Add images back', ()=> {
-        fullCollection.forEach((image) => {
-        cy.request({method: "POST",
-            url: "https://omar-dev.ossim.io/omar-stager/dataManager/addRaster?filename="+image.properties.filename+"&background=true&buildThumbnails=true&buildOverviews=true&buildHistograms=true&buildHistogramsWithR0=false&useFastHistogramStaging=false",
-            auth: {username: 'radiantcibot', password: 'lhLvXspFyX9wraf6jB1I'},
-            failOnStatusCode: false
-        })
-            .then((response) => {
-                let temp
-
-            })
-        })
-    })
 })
-
-// iterate through and grab the ones with mission id and filename
-
-
-// Make a call to the endpoint to get JSON data

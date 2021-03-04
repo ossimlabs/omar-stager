@@ -126,7 +126,7 @@ node(POD_LABEL){
                 withSonarQubeEnv('sonarqube'){
                     sh """
                         ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=${APP_NAME} \
+                        -Dsonar.projectKey=${APP_NAME}
                     """
             }
         }

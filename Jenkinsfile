@@ -127,7 +127,6 @@ node(POD_LABEL){
                     sh """
                         ${scannerHome}/bin/sonar-scanner \
                         -Dsonar.projectKey=${APP_NAME} \
-                        -Dsonar.login=${SONARQUBE_TOKEN}
                     """
             }
         }

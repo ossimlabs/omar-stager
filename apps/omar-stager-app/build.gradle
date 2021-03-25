@@ -10,10 +10,20 @@ grails {
     }
 }
 dependencies {
+    components {
+        all { ComponentMetadataDetails details ->
+            def version = details.id.version
+            if (version.contains("SNAPSHOT")) {
+                details.status = "milestone" // default in Gradle
+            } else if (version.contains("RELEASE")) {
+                details.status = "release"
+            }
+        }
+    }
     if ( ! System.getenv('O2_INLINE_BUILD') ) {
-       compile "io.ossim.omar.plugins:omar-stager-core-plugin:${omarStagerCorePluginVersion}"
-       compile "io.ossim.omar.plugins:omar-raster-plugin:${omarRasterPluginVersion}"
-       compile "io.ossim.omar.plugins:omar-video-plugin:${omarVideoPluginVersion}"
-       compile "io.ossim.omar.plugins:omar-opir-plugin:${omarOpirPluginVersion}"
+       compile "io.ossim.omar.plugins:omar-stager-core-plugin:latest.release"
+       compile "io.ossim.omar.plugins:omar-raster-plugin:latest.release"
+       compile "io.ossim.omar.plugins:omar-video-plugin:latest.release"
+       compile "io.ossim.omar.plugins:omar-opir-plugin:latest.release"
     }
 }

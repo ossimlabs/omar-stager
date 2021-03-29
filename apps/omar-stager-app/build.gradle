@@ -14,6 +14,6 @@ dependencies {
        compile "io.ossim.omar.plugins-RELEASE:omar-stager-core-plugin:+"
        compile "io.ossim.omar.plugins-RELEASE:omar-raster-plugin:+"
        compile "io.ossim.omar.plugins-RELEASE:omar-video-plugin:+"
-       compile "io.ossim.omar.plugins-RELEASE:omar-opir-plugin:+"
+       compile "io.ossim.omar.plugins:omar-opir-plugin:+"
     }
 }

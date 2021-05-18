@@ -179,13 +179,6 @@ spring:
       auto-registration:
         enabled: ${spring.cloud.discovery.enabled}
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://omar-eureka-server:8761/omar-eureka-server/eureka}
-  instance:
-    preferIpAddress: true
-
 ---
 # environments:
 #   production:

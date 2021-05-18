@@ -14,11 +14,6 @@ spec:
         app: {{ .Values.appName }}
     spec:
       initContainers:
-      {{- if (pluck "useSpringConfigServer" .Values .Values.global | first) }}
-      - name: wait-for-config-server
-        image: busybox:1.28
-        command: ['sh', '-c', "until wget omar-config-server:8888/omar-config-server/omar-stager.yml; do echo waiting for config server; sleep 2; done"]
-      {{- end }}
       {{- if .Values.extraInitContainers }}
       {{- toYaml .Values.extraInitContainers | nindent 6 }}
       {{- end }}

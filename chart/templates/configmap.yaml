@@ -6,63 +6,93 @@ metadata:
     app: "{{ .Values.appName }}"
 data:
   application.yaml: |- 
+    baseUrl: ${serverProtocol}://${serverName}
+
     endpoints:
+      enabled: true
+      health:
+        enabled: true
       actuator:
         sensitive: false
       beans:
         sensitive: false
-      configprops:
-        sensitive: false
-      enabled: true
-      env:
-        sensitive: false
-      health:
-        enabled: true
-      loggers:
-        sensitive: false
-      mappings:
-        sensitive: false
       metrics:
+        sensitive: false
+      configprops:
         sensitive: false
       trace:
         sensitive: false
-    
-    environments:
-      production:
-        dataSource:
-          url: ${omarDb.url}
-          dbCreate: update
-    omarDb:
-      dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
-      driver: org.postgresql.Driver
-      host:  {{ .Values.global.omarDb.host }}
-      name: {{ .Values.global.omarDb.name }}
-      username: {{ .Values.global.omarDb.user }}      
-      password: {{ .Values.global.omarDb.password }}
-      port: {{ .Values.global.omarDb.port }}
-      url: jdbc:postgresql://${omarDb.host}:${omarDb.port}/${omarDb.name}
+      mappings:
+        sensitive: false
+      env:
+        sensitive: false
+      loggers:
+        sensitive: false
+
     grails:
-      serverURL: {{ .Values.baseUrl }}${server.contextPath}
-    
+      serverURL: ${serverProtocol}://${serverName}${server.contextPath}
+
     hystrix:
       execution:
         timeout:
           enabled: false
       fallback:
         enabled: false
-    
+
+    logging:
+      level:
+        stager.app: ${loggingLevel}
+
+    loggingLevel: DEBUG
+
+    omarDb:
+      host:  {{ .Values.global.omarDb.host }}
+      name: {{ .Values.global.omarDb.name }}
+      username: {{ .Values.global.omarDb.user }}      
+      password: {{ .Values.global.omarDb.password }}
+      port: {{ .Values.global.omarDb.port }}
+      driver: org.postgresql.Driver
+      dialect: 'org.hibernate.spatial.dialect.postgis.PostgisDialect'
+      url: jdbc:postgresql://${omarDb.host}:${omarDb.port}/${omarDb.name}
+
+    serverDomain: ossim.io
+    serverName: omar-3pa-dev.${serverDomain}
+    serverNamePki: pki-omar-dev.${serverDomain}
+    serverProtocol: https
+
+    spring:
+      boot:
+        admin:
+          url: http://omar-admin-server:8080/omar-admin-server/
+          auto-deregistration: true
+          client:
+            prefer-ip: true
+          username: omar #Client app username for Spring Boot Admin
+          password: omarftw123 #Client app password for Spring Boot Admin
+
     swagger:
+      validatorUrl: null
       info:
-        contact:
-          email: kurt.feldbush@maxar.com
-          name: Maxar
-          url: http://overview.ossim.io
-        license:
-          name: Licensed under MIT
-          url: https://opensource.org/licenses/MIT
         title: ${info.app.name} API
         version: ${info.app.version}
-      validatorUrl: ""
+        contact:
+          name: "Maxar"
+          url: http://overview.${serverDomain}
+          email: "kurt.feldbush@maxar.com"
+        license:
+          name: "Licensed under MIT"
+          url: "https://opensource.org/licenses/MIT"
+
+    environments:
+      production:
+        dataSource:
+          pooled: true
+          jmxExport: true
+          driverClassName: ${omarDb.driver}
+          dialect:  ${omarDb.dialect}
+          url:      ${omarDb.url}
+          username: ${omarDb.username}
+          password: ${omarDb.password}
   
     server:
       servlet:

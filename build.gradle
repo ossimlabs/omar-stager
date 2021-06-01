@@ -164,7 +164,6 @@ subprojects { project ->
                 testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumVersion}"
 
                 compile 'org.springframework.cloud:spring-cloud-starter-config'
-                compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
             }
             else if ( isGrailsPlugin ) 
             {

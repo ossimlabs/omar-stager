@@ -27,7 +27,7 @@ if ( System.getenv( 'O2_INLINE_BUILD' ) )
            'omar-core',
            'omar-hibernate-spatial',
            'omar-oms',
-           'omar-opir',
+          // 'omar-opir',
            'omar-raster',
            'omar-stager-core',
            'omar-video'

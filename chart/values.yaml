@@ -14,7 +14,14 @@ global:
     password: null
   hostname: omar-dev.ossim.io
 
-  createIngress: true
+  omarDb:
+    name: null
+    host: null
+    user: null
+    password: null
+    port: null
+
+  createIngress: false
   useTls: false
   useTLSClientAuth: false
   sslCertSecretName: null
@@ -30,7 +37,7 @@ global:
 
   volumes:
     ossim-data:
-      type: ""
+      type: nfs
       nfsServer: null
       nfsMountPoint: null
       accessModes:
@@ -59,10 +66,10 @@ resources:
     
 image:
   name: omar-stager
-  tag: dev
+  tag: 2.13
   pullPolicy: Always
 
-ingressPath: /omar-stager
+path: /omar-stager
 internalPort: 8080
 externalPort: 8080
 

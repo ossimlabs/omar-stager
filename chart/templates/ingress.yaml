@@ -1,13 +1,12 @@
 {{- if (pluck "createIngress" .Values .Values.global | first) }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.appName }}
   annotations:
     kubernetes.io/ingress.class: {{ .Values.ingressClass | default "nginx" | quote }}
-    {{- if (pluck "useTlsClientSAuth" .Values .Values.global | first) }}
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .Release.Namespace }}/{{ .Values.global.authSslCertSecretName }}
-    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    {{- if .Values.extraIngressAnnotations }}
+      {{- toYaml .Values.extraIngressAnnotations | nindent 4 }}
     {{- end }}
 spec:
   {{- $hostnames := ternary ( list .Values.global.hostname ) .Values.hostnames ( empty .Values.hostnames ) }}
@@ -24,9 +23,12 @@ spec:
   - host: {{ $hostname }}
     http:
       paths:
-      - path: {{ $.Values.ingressPath }}
+      - path: {{ $.Values.path }}
+        pathType: Prefix
         backend:
-          serviceName: {{ $.Values.appName }}-app
-          servicePort: {{ $.Values.internalPort }}
+          service:
+            name: {{ $.Values.appName }}
+            port: 
+              number: {{ $.Values.internalPort }}
   {{- end }}
 {{- end }}

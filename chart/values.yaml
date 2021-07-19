@@ -21,7 +21,7 @@ global:
     password: null
     port: null
 
-  createIngress: false
+  createIngress: true
   useTls: false
   useTLSClientAuth: false
   sslCertSecretName: null
@@ -29,7 +29,7 @@ global:
 
   createImagePullSecret: true
   useImagePullSecret: true
-  
+
   createHpa: true
   createPVs: true
 
@@ -63,7 +63,7 @@ resources:
   requests:
     cpu: 300m
     memory: 500Mi
-    
+
 image:
   name: omar-stager
   tag: 2.13
@@ -91,6 +91,7 @@ terminationGracePeriodSeconds: 30
 
 envVars:
   SPRING_CLOUD_CONFIG_LABEL: master
+  SPRING_CLOUD_DISCOVERY_ENABLED: false
   BUCKETS: o2-test-data
 
 configmaps: {}

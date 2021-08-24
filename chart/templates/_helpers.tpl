@@ -40,12 +40,6 @@
 {{- define "omar-stager.volumeMounts" -}}
 {{- include "omar-stager.volumeMounts.configmaps" . -}}
 {{- include "omar-stager.volumeMounts.pvcs" . -}}
-{{- if .Values.global.extraVolumeMounts }}
-{{ toYaml .Values.global.extraVolumeMounts }}
-{{- end }}
-{{- if .Values.extraVolumeMounts }}
-{{ toYaml .Values.extraVolumeMounts }}
-{{- end }}
 {{- end -}}
 
 

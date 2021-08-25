@@ -68,10 +68,4 @@
 {{- define "omar-stager.volumes" -}}
 {{- include "omar-stager.volumes.configmaps" . -}}
 {{- include "omar-stager.volumes.pvcs" . -}}
-{{- if .Values.global.extraVolumes }}
-{{ toYaml .Values.global.extraVolumes }}
-{{- end }}
-{{- if .Values.extraVolumes }}
-{{ toYaml .Values.extraVolumes }}
-{{- end }}
 {{- end -}}

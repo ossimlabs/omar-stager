@@ -223,5 +223,5 @@ videoStreaming:
 stager:
   errorFile:
     enabled: true
-    directory: /tmp/stager-errors-from-config/
+    directory: /tmp/omar-stager/errors/
 

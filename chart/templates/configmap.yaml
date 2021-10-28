@@ -68,3 +68,8 @@ data:
       servlet:
         context-path: {{ .Values.ingressPath }}
       contextPath: ${server.servlet.context-path}
+
+    stager:
+      errorFile:
+        enabled: {{ .Values.stagerErrorFileEnabled }}
+        directory: {{ .Values.stagerErrorFileDir }}

@@ -222,6 +222,6 @@ videoStreaming:
 ---
 stager:
   errorFile:
-    enabled: true
+    enabled: false
     directory: /tmp/omar-stager/errors/
 

@@ -35,6 +35,9 @@ global:
 
   useSpringConfigServer: false
 
+  stagerErrorFileEnabled: false
+  stagerErrorFileDir: /tmp/omar-stager/errors/
+
   volumes:
     ossim-data:
       type: nfs

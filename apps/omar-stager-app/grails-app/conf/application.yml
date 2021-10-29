@@ -217,4 +217,11 @@ swagger:
 
 videoStreaming:
   videoServerDirRoot: /data/videos
-  videoServerUrlRoot: ${serverProtocol}://${serverName}/videos    
+  videoServerUrlRoot: ${serverProtocol}://${serverName}/videos
+
+---
+stager:
+  errorFile:
+    enabled: false
+    directory: /tmp/omar-stager/errors/
+

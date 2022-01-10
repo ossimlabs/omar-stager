@@ -28,7 +28,7 @@ spring:
                 - '**/*.gsp'
                 - '*.gson'
                 - '**/*.gson'
-                - 'logback.groovy'
+                - 'logback.xml'
                 - '*.properties'
 management:
     endpoints:
@@ -192,7 +192,7 @@ spring:
 #       password: password
 
 logging:
-  config: classpath:logback.groovy
+  config: classpath:logback.xml
 
 quartz:
   # This service supports background jobs using the quartz framework.

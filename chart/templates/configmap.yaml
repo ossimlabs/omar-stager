@@ -6,27 +6,6 @@ metadata:
     app: "{{ .Values.appName }}"
 data:
   application.yaml: |- 
-    endpoints:
-      actuator:
-        sensitive: false
-      beans:
-        sensitive: false
-      configprops:
-        sensitive: false
-      enabled: true
-      env:
-        sensitive: false
-      health:
-        enabled: true
-      loggers:
-        sensitive: false
-      mappings:
-        sensitive: false
-      metrics:
-        sensitive: false
-      trace:
-        sensitive: false
-    
     environments:
       production:
         dataSource:
@@ -43,26 +22,6 @@ data:
       url: jdbc:postgresql://${omarDb.host}:${omarDb.port}/${omarDb.name}
     grails:
       serverURL: {{ .Values.baseUrl }}${server.contextPath}
-    
-    hystrix:
-      execution:
-        timeout:
-          enabled: false
-      fallback:
-        enabled: false
-    
-    swagger:
-      info:
-        contact:
-          email: kurt.feldbush@maxar.com
-          name: Maxar
-          url: http://overview.ossim.io
-        license:
-          name: Licensed under MIT
-          url: https://opensource.org/licenses/MIT
-        title: ${info.app.name} API
-        version: ${info.app.version}
-      validatorUrl: ""
   
     server:
       servlet:

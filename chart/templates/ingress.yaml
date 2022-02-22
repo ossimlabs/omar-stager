@@ -23,7 +23,7 @@ spec:
   - host: {{ $hostname }}
     http:
       paths:
-      - path: {{ $.Values.path }}
+      - path: {{ $.Values.ingressPath }}
         pathType: Prefix
         backend:
           service:

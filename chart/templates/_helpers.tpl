@@ -61,7 +61,11 @@
 {{- $volumeDict := index $.Values.global.volumes $volumeName }}
 - name: {{ $volumeName }}
   persistentVolumeClaim:
+{{- if (pluck "createPVs" $.Values $.Values.global | first) }}
     claimName: "{{ $.Values.appName }}-{{ $volumeName }}-pvc"
+{{- else }}
+    claimName: "{{ $volumeName }}"
+{{- end -}}
 {{- end -}}
 {{- end -}}
 

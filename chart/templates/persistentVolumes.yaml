@@ -1,4 +1,4 @@
-{{- if (pluck "createPVs" .Values .Values.global) }}
+{{- if (pluck "createPVs" .Values .Values.global | first) }}
 
 {{- range $volumeName := .Values.volumeNames }}
 {{- $volumeDict := index $.Values.global.volumes $volumeName }}

@@ -21,7 +21,11 @@ global:
     password: null
     port: null
 
-  createIngress: true
+  ingress:
+    class: nginx
+    enabled: true
+    annotations: {}
+
   useTls: false
   useTLSClientAuth: false
   sslCertSecretName: null
@@ -71,6 +75,13 @@ image:
   name: omar-stager
   tag: 2.13
   pullPolicy: Always
+
+ingress:
+  enabled:
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  class: # defaults to nginx if not set
 
 ingressPath: /omar-stager
 internalPort: 8080

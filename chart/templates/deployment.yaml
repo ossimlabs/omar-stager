@@ -24,7 +24,7 @@ spec:
       - name:  {{ .Values.appName }}
         env:
         {{- include "omar-stager.envVars" . | indent 8 }}
-        image: "{{ .Values.global.dockerRepository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        image: {{ include "helm-base.image" . | quote }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}

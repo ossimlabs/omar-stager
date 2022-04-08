@@ -42,9 +42,23 @@
 {{- include "omar-stager.volumeMounts.pvcs" . -}}
 {{- end -}}
 
-
-
-
+{{/*
+Return the proper image name
+*/}}
+{{- define "helm-base.image" -}}
+{{- $registryName := .Values.image.registry -}}
+{{- $imageName := .Values.image.name -}}
+{{- $tag := .Values.image.tag | default .Chart.AppVersion | toString -}}
+{{- if .Values.global }}
+    {{- if .Values.global.dockerRepository }}
+        {{- printf "%s/%s:%s" .Values.global.dockerRepository $imageName $tag -}}
+    {{- else -}}
+        {{- printf "%s/%s:%s" $registryName $imageName $tag -}}
+    {{- end -}}
+{{- else -}}
+    {{- printf "%s/%s:%s" $registryName $imageName $tag -}}
+{{- end -}}
+{{- end -}}
 
 {{/* Templates for the volumes section */}}
 

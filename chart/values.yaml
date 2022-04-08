@@ -73,7 +73,7 @@ resources:
 
 image:
   name: omar-stager
-  tag: 2.13
+  tag: null
   pullPolicy: IfNotPresent
 
 ingress:

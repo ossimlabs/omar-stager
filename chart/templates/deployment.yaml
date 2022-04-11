@@ -1,8 +1,13 @@
+{{- $annotations := merge .Values.deployment.annotations $.Values.global.deployment.annotations -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels: {}
   name: {{ .Values.appName }}
+  annotations:
+  {{- range $key, $value := $annotations }}
+    {{- $key | nindent 4 }}: {{ tpl $value $ | quote }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:

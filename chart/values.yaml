@@ -42,6 +42,9 @@ global:
   stagerErrorFileEnabled: false
   stagerErrorFileDir: /tmp/omar-stager/errors/
 
+  deployment:
+    annotations: {}
+
   volumes:
     ossim-data:
       type: nfs
@@ -113,3 +116,6 @@ configmaps: {}
 extraInitContainers: []
 
 sideCars: []
+
+deployment:
+  annotations: {}

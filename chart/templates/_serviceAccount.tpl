@@ -10,7 +10,7 @@ Determine whether the serviceAccount should be created by examining local and gl
 {{- else if $globals }}
 {{-  .Values.global.serviceAccount.enabled }}
 {{- else }}
-{{-   true }}
+{{-   false }}
 {{- end -}}
 {{- end -}}
 
@@ -21,6 +21,6 @@ Determine the serviceAccount class name
 {{-   if eq (include "omar-stager.serviceAccount.enabled" $) "true" }}
 {{-     pluck "name" .Values.serviceAccount .Values.global.serviceAccount | first | default $.Values.fullnameOverride -}}
 {{-   else }}
-{{-     pluck "name" .Values.serviceAccount .Values.global.serviceAccount | first | default "" -}}
+{{-     pluck "name" .Values.serviceAccount .Values.global.serviceAccount | first | default "default" -}}
 {{-   end }}
 {{- end -}}

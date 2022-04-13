@@ -29,7 +29,7 @@ spec:
       - name:  {{ .Values.appName }}
         env:
         {{- include "omar-stager.envVars" . | indent 8 }}
-        image: {{ include "helm-base.image" . | quote }}
+        image: {{ include "omar-stager.image" . | quote }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
@@ -69,6 +69,7 @@ spec:
       {{- end }}
       restartPolicy: Always
       securityContext: {}
+      serviceAccountName: {{ include "omar-stager.serviceAccount.name" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       volumes:
       {{- include "omar-stager.volumes" . | indent 6 }}

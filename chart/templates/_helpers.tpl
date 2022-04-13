@@ -45,7 +45,7 @@
 {{/*
 Return the proper image name
 */}}
-{{- define "helm-base.image" -}}
+{{- define "omar-stager.image" -}}
 {{- $registryName := .Values.image.registry -}}
 {{- $imageName := .Values.image.name -}}
 {{- $tag := .Values.image.tag | default .Chart.AppVersion | toString -}}

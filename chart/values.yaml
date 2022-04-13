@@ -4,7 +4,7 @@
 
 replicas: 1
 
-appName: omar-stager
+fullnameOverride: omar-stager
 
 global:
   dockerRepository: nexus-docker-private-group.ossim.io

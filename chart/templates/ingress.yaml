@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.appName }}
+  name: {{ .Values.fullnameOverride }}
   annotations:
     {{- range $key, $value := $annotations }}
       {{- $key | nindent 4 }}: {{ tpl $value $ | quote }}
@@ -28,7 +28,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ $.Values.appName }}-app
+            name: {{ $.Values.fullnameOverride }}-app
             port:
               number: {{ $.Values.internalPort }}
   {{- end }}

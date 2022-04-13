@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.appName }}"
+  name: "{{ .Values.fullnameOverride }}"
   labels:
-    app: "{{ .Values.appName }}"
+    app: "{{ .Values.fullnameOverride }}"
 data:
   application.yaml: |-
     environments:

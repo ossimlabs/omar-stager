@@ -5,8 +5,8 @@
 {{/* Template for env vars */}}
 {{- define "omar-stager.envVars" -}}
   {{- range $key, $value := merge .Values.envVars .Values.global.envVars }}
-  - name: {{ tpl $key $ | quote }}
-    value: {{ tpl $value $ | quote }}
+  - name: {{ tpl (toString $key) $ | quote }}
+    value: {{ tpl (toString $value) $ | quote }}
   {{- end }}
 {{- end -}}
 

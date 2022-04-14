@@ -4,9 +4,9 @@
 
 {{/* Template for env vars */}}
 {{- define "omar-stager.envVars" -}}
-  {{- range $key, $value := .Values.envVars }}
-  - name: {{ $key | quote }}
-    value: {{ $value | quote }}
+  {{- range $key, $value := merge .Values.envVars .Values.global.envVars }}
+  - name: {{ tpl $key $ | quote }}
+    value: {{ tpl $value $ | quote }}
   {{- end }}
 {{- end -}}
 

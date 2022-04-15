@@ -4,7 +4,7 @@
 
 replicas: 1
 
-appName: omar-stager
+fullnameOverride: omar-stager
 
 global:
   dockerRepository: nexus-docker-private-group.ossim.io
@@ -21,7 +21,11 @@ global:
     password: null
     port: null
 
-  createIngress: true
+  ingress:
+    class: nginx
+    enabled: true
+    annotations: {}
+
   useTls: false
   useTLSClientAuth: false
   sslCertSecretName: null
@@ -37,6 +41,16 @@ global:
 
   stagerErrorFileEnabled: false
   stagerErrorFileDir: /tmp/omar-stager/errors/
+
+  deployment:
+    annotations: {}
+
+  serviceAccount:
+    enabled: false
+    annotations: {}
+    # name:
+
+  envVars: {}
 
   volumes:
     ossim-data:
@@ -69,8 +83,15 @@ resources:
 
 image:
   name: omar-stager
-  tag: 2.13
-  pullPolicy: Always
+  tag: null
+  pullPolicy: IfNotPresent
+
+ingress:
+  enabled:
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  class: # defaults to nginx if not set
 
 ingressPath: /omar-stager
 internalPort: 8080
@@ -102,3 +123,15 @@ configmaps: {}
 extraInitContainers: []
 
 sideCars: []
+
+deployment:
+  annotations: {}
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  enabled: null
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and enabled is true, a name is generated using the fullname template
+  # name:

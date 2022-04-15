@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.appName }}"
+  name: "{{ .Values.fullnameOverride }}"
   labels:
-    app: "{{ .Values.appName }}"
+    app: "{{ .Values.fullnameOverride }}"
 data:
-  application.yaml: |- 
+  application.yaml: |-
     environments:
       production:
         dataSource:
@@ -16,13 +16,13 @@ data:
       driver: org.postgresql.Driver
       host:  {{ .Values.global.omarDb.host }}
       name: {{ .Values.global.omarDb.name }}
-      username: {{ .Values.global.omarDb.user }}      
+      username: {{ .Values.global.omarDb.user }}
       password: {{ .Values.global.omarDb.password }}
       port: {{ .Values.global.omarDb.port }}
       url: jdbc:postgresql://${omarDb.host}:${omarDb.port}/${omarDb.name}
     grails:
-      serverURL: {{ .Values.baseUrl }}${server.contextPath}
-  
+      serverURL: {{ .Values.global.hostname}}${server.contextPath}
+
     server:
       servlet:
         context-path: {{ .Values.ingressPath }}

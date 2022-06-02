@@ -11,7 +11,7 @@ grails {
 dependencies {
     if ( ! System.getenv('O2_INLINE_BUILD') ) {
        compile "io.ossim.omar.plugins-SNAPSHOT:omar-stager-core-plugin:2.1.1-SNAPSHOT"
-       compile "io.ossim.omar.plugins-RELEASE:omar-raster-plugin:+"
+       compile "io.ossim.omar.plugins-SNAPSHOT:omar-raster-plugin:+"
        compile "io.ossim.omar.plugins-RELEASE:omar-video-plugin:+"
     }
 }

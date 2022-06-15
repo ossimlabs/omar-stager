@@ -29,6 +29,10 @@ data:
       contextPath: ${server.servlet.context-path}
 
     stager:
-      errorFile:
-        enabled: {{ .Values.stagerErrorFileEnabled }}
-        directory: {{ .Values.stagerErrorFileDir }}
+      errors:
+        table:
+          enabled: {{ .Values.errorsTable }}
+        slack:
+          enabled: {{ .Values.errorsSlack }}
+          webhook: {{ .Values.slackWebhook }}
+          message: {{ .Values.slackMessage }}

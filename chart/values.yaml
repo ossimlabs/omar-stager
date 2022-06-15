@@ -39,9 +39,6 @@ global:
 
   useSpringConfigServer: false
 
-  stagerErrorFileEnabled: false
-  stagerErrorFileDir: /tmp/omar-stager/errors/
-
   deployment:
     annotations: {}
 
@@ -135,3 +132,9 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and enabled is true, a name is generated using the fullname template
   # name:
+
+# Error writing for stager
+errorsTable: true
+errorsSlack: false
+slackWebhook: null
+slackMessage: "<!here> `omar-stager` hit an error.  :emergency-alarm: \nFile: ```<filename>```\nError: ```<message>```"

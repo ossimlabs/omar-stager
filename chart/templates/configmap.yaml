@@ -34,5 +34,5 @@ data:
           enabled: {{ .Values.errorsTable }}
         slack:
           enabled: {{ .Values.errorsSlack }}
-          webhook: {{ .Values.slackWebhook }}
-          message: {{ .Values.slackMessage }}
+          webhook: {{ .Values.slackWebhook | quote }}
+          message: {{ .Values.slackMessage | quote }}

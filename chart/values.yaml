@@ -137,4 +137,4 @@ serviceAccount:
 errorsTable: true
 errorsSlack: false
 slackWebhook: null
-slackMessage: "<!here> `omar-stager` hit an error.  :emergency-alarm: \nFile: ```<filename>```\nError: ```<message>```"
+slackMessagePrefix: "<!here> `omar-stager` hit an error.  :emergency-alarm:"

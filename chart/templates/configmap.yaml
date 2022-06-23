@@ -21,7 +21,7 @@ data:
       port: {{ .Values.global.omarDb.port }}
       url: jdbc:postgresql://${omarDb.host}:${omarDb.port}/${omarDb.name}
     grails:
-      serverURL: {{ .Values.global.hostname}}${server.contextPath}
+      serverURL: ${server.contextPath}
 
     server:
       servlet:
@@ -35,4 +35,4 @@ data:
         slack:
           enabled: {{ .Values.errorsSlack }}
           webhook: {{ .Values.slackWebhook | quote }}
-          message: {{ .Values.slackMessagePrefix | quote }}
+          messagePrefix: {{ .Values.slackMessagePrefix | quote }}

@@ -135,6 +135,6 @@ serviceAccount:
 
 # Error writing for stager
 errorsTable: true
-errorsSlack: false
+slackErrors: false
 slackWebhook: null
 slackMessagePrefix: "<!here> `omar-stager` hit an error.  :emergency-alarm:"

@@ -33,6 +33,6 @@ data:
         table:
           enabled: {{ .Values.errorsTable }}
         slack:
-          enabled: {{ .Values.errorsSlack }}
+          enabled: {{ .Values.slackErrors }}
           webhook: {{ .Values.slackWebhook | quote }}
           messagePrefix: {{ .Values.slackMessagePrefix | quote }}

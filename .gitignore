@@ -19,3 +19,4 @@ docker/*.jar
 node_modules
 package-lock.json 
 /omar-stager-tests.sh
+*.tgz

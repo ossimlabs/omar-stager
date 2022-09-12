@@ -7,12 +7,18 @@ replicas: 1
 fullnameOverride: omar-stager
 
 global:
-  dockerRepository: nexus-docker-private-group.ossim.io
+
   imagePullSecret:
     registry: null
     username: null
     password: null
+
   hostname: omar-dev.ossim.io
+
+  image:
+    registry: ""
+    pullPolicy: ""
+    pullSecrets: []
 
   omarDb:
     name: null
@@ -31,8 +37,6 @@ global:
   sslCertSecretName: null
   authSslCertSecretName: null
 
-  
-
   createHpa: true
   createPVs: true
 
@@ -47,6 +51,9 @@ global:
     # name:
 
   envVars: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
 
   volumes:
     ossim-data:
@@ -122,6 +129,10 @@ sideCars: []
 
 deployment:
   annotations: {}
+
+nodeSelector: {}
+affinity: {}
+tolerations: []
 
 serviceAccount:
   # Specifies whether a service account should be created

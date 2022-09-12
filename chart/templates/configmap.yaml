@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.fullnameOverride }}"
+  name: "{{ include "omar-stager.fullname" . }}"
   labels:
-    app: "{{ .Values.fullnameOverride }}"
+    {{- include "omar-stager.labels" . | nindent 4 }}
 data:
   application.yaml: |-
     environments:

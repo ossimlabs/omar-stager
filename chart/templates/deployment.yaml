@@ -2,8 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels: {}
-  name: {{ .Values.fullnameOverride }}
+  labels:
+    {{- include "omar-stager.labels" . | nindent 4 }}
+  name: {{ include "omar-stager.fullname" . }}
   annotations:
   {{- range $key, $value := $annotations }}
     {{- $key | nindent 4 }}: {{ tpl $value $ | quote }}
@@ -12,11 +13,11 @@ spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.fullnameOverride }}
+      {{- include "omar-stager.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ .Values.fullnameOverride }}
+        {{- include "omar-stager.selectorLabels" . | nindent 8 }}
     spec:
       initContainers:
       {{- if .Values.extraInitContainers }}
@@ -26,7 +27,7 @@ spec:
       {{- if .Values.sideCars }}
       {{- toYaml .Values.sideCars | nindent 6 }}
       {{- end }}
-      - name:  {{ .Values.fullnameOverride }}
+      - name: {{ .Chart.Name }}
         env:
         {{- include "omar-stager.envVars" . | indent 8 }}
         image: {{ include "omar-stager.image" . | quote }}
@@ -68,5 +69,17 @@ spec:
       securityContext: {}
       serviceAccountName: {{ include "omar-stager.serviceAccount.name" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with merge .Values.nodeSelector .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with merge .Values.affinity .Values.global.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with concat .Values.tolerations .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         {{- include "omar-stager.volumes" . | nindent 8 }}

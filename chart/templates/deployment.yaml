@@ -30,6 +30,10 @@ spec:
       - name: {{ .Chart.Name }}
         env:
         {{- include "omar-stager.envVars" . | indent 8 }}
+        envFrom:
+          {{- with (concat .Values.envFrom .Values.global.envFrom) }}
+          {{- tpl (toYaml .) $ | nindent 10 }}
+          {{- end }}
         image: {{ include "omar-stager.image" . | quote }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:

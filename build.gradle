@@ -103,7 +103,13 @@ subprojects { project ->
 
         repositories {
             mavenLocal()
-            maven { url ossimMavenProxy }
+            maven {
+                url ossimMavenProxy
+                credentials {
+                    username ossimMavenProxyUsername
+                    password ossimMavenProxyPassword
+                }
+            }
             maven { url "https://repo.grails.org/grails/core" }
         }
 

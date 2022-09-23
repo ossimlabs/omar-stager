@@ -35,7 +35,7 @@ spec:
           {{- tpl (toYaml .) $ | nindent 10 }}
           {{- end }}
         image: {{ include "omar-stager.image" . | quote }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ include "omar-stager.pullPolicy" . }}
         livenessProbe:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}

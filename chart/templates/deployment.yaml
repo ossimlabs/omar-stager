@@ -2,8 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels: {}
-  name: {{ .Values.fullnameOverride }}
+  labels:
+    {{- include "omar-stager.labels" . | nindent 4 }}
+  name: {{ include "omar-stager.fullname" . }}
   annotations:
   {{- range $key, $value := $annotations }}
     {{- $key | nindent 4 }}: {{ tpl $value $ | quote }}
@@ -12,11 +13,11 @@ spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.fullnameOverride }}
+      {{- include "omar-stager.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ .Values.fullnameOverride }}
+        {{- include "omar-stager.selectorLabels" . | nindent 8 }}
     spec:
       initContainers:
       {{- if .Values.extraInitContainers }}
@@ -26,11 +27,15 @@ spec:
       {{- if .Values.sideCars }}
       {{- toYaml .Values.sideCars | nindent 6 }}
       {{- end }}
-      - name:  {{ .Values.fullnameOverride }}
+      - name: {{ .Chart.Name }}
         env:
         {{- include "omar-stager.envVars" . | indent 8 }}
+        envFrom:
+          {{- with (concat .Values.envFrom .Values.global.envFrom) }}
+          {{- tpl (toYaml .) $ | nindent 10 }}
+          {{- end }}
         image: {{ include "omar-stager.image" . | quote }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ include "omar-stager.pullPolicy" . }}
         livenessProbe:
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
@@ -61,15 +66,24 @@ spec:
             memory: {{ .Values.resources.requests.memory }}
         terminationMessagePath: /dev/termination-log
         volumeMounts:
-        {{- include "omar-stager.volumeMounts" . | indent 8 }}
+          {{- include "omar-stager.volumeMounts" . | nindent 12 }}
       dnsPolicy: ClusterFirst
-      {{- if .Values.global.useImagePullSecret }}
-      imagePullSecrets:
-        - name: {{ .Values.fullnameOverride }}-pull-secret
-      {{- end }}
+      {{- include "omar-stager.imagePullSecrets" . | indent 6 }}
       restartPolicy: Always
       securityContext: {}
       serviceAccountName: {{ include "omar-stager.serviceAccount.name" . }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with merge .Values.nodeSelector .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with merge .Values.affinity .Values.global.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with concat .Values.tolerations .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
-      {{- include "omar-stager.volumes" . | indent 6 }}
+        {{- include "omar-stager.volumes" . | nindent 8 }}

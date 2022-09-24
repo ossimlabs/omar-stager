@@ -19,7 +19,7 @@ Determine the serviceAccount class name
 */}}
 {{- define "omar-stager.serviceAccount.name" -}}
 {{-   if eq (include "omar-stager.serviceAccount.enabled" $) "true" }}
-{{-     pluck "name" .Values.serviceAccount .Values.global.serviceAccount | first | default $.Values.fullnameOverride -}}
+{{-     pluck "name" .Values.serviceAccount .Values.global.serviceAccount | first | default (include "omar-stager.fullname" $) -}}
 {{-   else }}
 {{-     pluck "name" .Values.serviceAccount .Values.global.serviceAccount | first | default "default" -}}
 {{-   end }}

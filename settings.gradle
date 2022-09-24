@@ -1,7 +1,13 @@
 pluginManagement {
 	repositories {
 		mavenLocal()
-		maven { url ossimMavenProxy }
+		maven {
+			url ossimMavenProxy
+			credentials {
+				username ossimMavenProxyUsername
+				password ossimMavenProxyPassword
+			}
+		}
 		gradlePluginPortal()
 	}
 }
@@ -23,7 +29,7 @@ rootProject.name='omar-stager'
 
 if ( System.getenv( 'O2_INLINE_BUILD' ) )
 {
-	def modules = [ 
+	def modules = [
            'omar-core',
            'omar-hibernate-spatial',
            'omar-oms',

@@ -62,34 +62,6 @@ app.kubernetes.io/name: {{ include "omar-stager.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/* Templates for the volumeMounts section */}}
-
-{{- define "omar-stager.volumeMounts.configmaps" -}}
-{{- range $configmapName, $configmapDict := .Values.configmaps}}
-- name: {{ $configmapName | quote }}
-  mountPath: {{ $configmapDict.mountPath | quote }}
-  {{- if $configmapDict.subPath }}
-  subPath: {{ $configmapDict.subPath | quote }}
-  {{- end }}
-{{- end -}}
-{{- end -}}
-
-{{- define "omar-stager.volumeMounts.pvcs" -}}
-{{- range $volumeName := .Values.volumeNames }}
-{{- $volumeDict := index $.Values.global.volumes $volumeName }}
-- name: {{ $volumeName }}
-  mountPath: {{ $volumeDict.mountPath }}
-  {{- if $volumeDict.subPath }}
-  subPath: {{ $volumeDict.subPath | quote }}
-  {{- end }}
-{{- end -}}
-{{- end -}}
-
-{{- define "omar-stager.volumeMounts" -}}
-{{- include "omar-stager.volumeMounts.configmaps" . -}}
-{{- include "omar-stager.volumeMounts.pvcs" . -}}
-{{- end -}}
-
 {{/*
 Return the proper image name
 */}}
@@ -98,8 +70,8 @@ Return the proper image name
 {{- $imageName := .Values.image.name -}}
 {{- $tag := .Values.image.tag | default .Chart.AppVersion | toString -}}
 {{- if .Values.global }}
-    {{- if .Values.global.dockerRepository }}
-        {{- printf "%s/%s:%s" .Values.global.dockerRepository $imageName $tag -}}
+    {{- if .Values.global.image.registry }}
+        {{- printf "%s/%s:%s" .Values.global.image.registry $imageName $tag -}}
     {{- else -}}
         {{- printf "%s/%s:%s" $registryName $imageName $tag -}}
     {{- end -}}
@@ -108,30 +80,6 @@ Return the proper image name
 {{- end -}}
 {{- end -}}
 
-{{/* Templates for the volumes section */}}
-
-{{- define "omar-stager.volumes.configmaps" -}}
-{{- range $configmapName, $configmapDict := .Values.configmaps}}
-- name: {{ $configmapName | quote }}
-  configMap:
-    name: {{ $configmapName | quote }}
-{{- end -}}
-{{- end -}}
-
-{{- define "omar-stager.volumes.pvcs" -}}
-{{- range $volumeName := .Values.volumeNames }}
-{{- $volumeDict := index $.Values.global.volumes $volumeName }}
-- name: {{ $volumeName }}
-  persistentVolumeClaim:
-{{- if (pluck "createPVs" $.Values $.Values.global | first) }}
-    claimName: "{{ $.Values.fullnameOverride }}-{{ $volumeName }}-pvc"
-{{- else }}
-    claimName: "{{ $volumeName }}"
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "omar-stager.volumes" -}}
-{{- include "omar-stager.volumes.configmaps" . -}}
-{{- include "omar-stager.volumes.pvcs" . -}}
+{{- define "omar-stager.pullPolicy" -}}
+{{ .Values.image.pullPolicy | default .Values.global.image.pullPolicy | default "IfNotPresent" }}
 {{- end -}}

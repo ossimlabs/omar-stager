@@ -2,8 +2,8 @@ package omar.stager.app
  
 import grails.util.Holders
 import omar.core.Repository
-import omar.stager.core.StagerJob
-import org.quartz.TriggerKey
+//import omar.stager.core.StagerJob
+//import org.quartz.TriggerKey
 
 import grails.util.Environment
 
@@ -33,6 +33,7 @@ class BootStrap {
        //StagerUtils.resetSqsConfig()
        //StagerUtils.sqsConfig
 
+/*
        def quartzScheduler = grailsApplication.mainContext.getBean('quartzScheduler')
 
        //if(SqsUtils.sqsConfig.reader.enabled)
@@ -46,7 +47,7 @@ class BootStrap {
             // trigger.repeatInterval = StagerUtils.sqsConfig.reader.pollingIntervalSeconds*1000 as Long
           }
        //}
-
+*/
     }
     def destroy = {
     }

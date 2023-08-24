@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
   implementation 'io.ossim.omar.plugins:omar-raster-plugin:+'
+  implementation 'io.ossim.omar.plugins:omar-swagger-plugin:+'
   implementation 'io.ossim.omar.plugins:omar-video-plugin:+'
   runtimeOnly "org.grails.plugins:grails-console:${grailsConsoleVersion}"
 }

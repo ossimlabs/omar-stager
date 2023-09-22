@@ -33,7 +33,9 @@ if ( System.getenv( 'O2_INLINE_BUILD' ) ) {
         'omar-raster',
         'omar-stager-core',
         'omar-swagger',
-        'omar-video'
+        'omar-video',
+        'mgp-catid-generator'
+
     ]
 
     modules?.each { module ->

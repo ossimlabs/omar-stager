@@ -7,6 +7,7 @@ dependencies {
   implementation 'io.ossim.omar.plugins:omar-raster-plugin:+'
   implementation 'io.ossim.omar.plugins:omar-swagger-plugin:+'
   implementation 'io.ossim.omar.plugins:omar-video-plugin:+'
+  implementation 'io.ossim.omar.plugins:mgp-catid-generator-plugin:+'
   runtimeOnly "org.grails.plugins:grails-console:${grailsConsoleVersion}"
 }
 

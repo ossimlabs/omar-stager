@@ -23,4 +23,8 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
+    <logger name="mgp" level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
 </configuration>

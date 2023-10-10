@@ -2,6 +2,7 @@ Thumbs.db
 .DS_Store
 .gradle
 build/
+target/
 out/
 .idea
 *.iml
@@ -10,13 +11,7 @@ out/
 .project
 .settings
 .classpath
+.factorypath
+values-dev.yaml
 prodDb.mv.db
-packaged-chart
-*.lock
-charts/*.tgz
-apps/omar-stager-app/bin/
-docker/*.jar
-node_modules
-package-lock.json 
-/omar-stager-tests.sh
-*.tgz
+bin

@@ -131,9 +131,9 @@ environments:
             web-allow-others: true
 ---
 omarDb:
-  host: localhost
+  host: host.docker.internal
   port: 5432
-  username: postgres  
+  username: postgres
   password: postgres
 
 environments:
@@ -142,4 +142,4 @@ environments:
       name: omardb-dev
   production:
     omarDb:
-      name: omardb-prod            
+      name: omardb-prod

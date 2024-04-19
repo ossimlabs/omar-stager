@@ -47,6 +47,7 @@ grails:
   gorm:
     reactor:
       events: false
+    flushMode: AUTO
   mime:
     disable:
       accept:

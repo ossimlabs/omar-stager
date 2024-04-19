@@ -147,6 +147,5 @@ serviceAccount:
 
 # Error writing for stager
 errorsTable: true
-slackErrors: false
-slackWebhook: null
-slackMessagePrefix: "<!here> `omar-stager` hit an error.  :emergency-alarm:"
+teamsErrors: false
+teamsMessagePrefix: "<!here> `omar-stager` hit an error.  :emergency-alarm:"

@@ -5,15 +5,16 @@ metadata:
 build:
   artifacts:
     - image: registry.iap.maxar.com/gegd/omar/omar-stager
-      jib: 
+      jib:
         project: omar-stager-app
       context: ./apps/omar-stager-app
   tagPolicy:
     sha256: {}
 deploy:
+  kubeContext: omar-3pa-dev
   helm:
     releases:
-      - name: omar-stager # this is the helm release name                
+      - name: omar-stager # this is the helm release name
         chartPath: ./apps/omar-stager-app/chart
         valuesFiles:
           - ./apps/omar-stager-app/values-dev.yaml # provides values to override defaults in chart

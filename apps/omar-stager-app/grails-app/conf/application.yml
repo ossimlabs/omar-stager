@@ -144,3 +144,15 @@ environments:
   production:
     omarDb:
       name: omardb-prod
+teams:
+  webhook: http://nothing
+  rid: 124
+  token: 123
+
+stager:
+  errors:
+    table:
+      enabled: false
+    teams:
+      enabled: false
+      message: "Testing"
